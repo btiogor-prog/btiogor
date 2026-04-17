@@ -3,62 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MarlyServe — POS</title>
+  <title>MarlyServe — Barbacoa Tio R</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
-      --primary: #E85D04;
+      /* Color rojo de Barbacoa Tio R */
+      --primary: #CC0000; 
       --muted: #6b7280;
     }
     .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #f9fafb; padding: 1rem; }
-    .login-box { background: white; width: 100%; max-width: 400px; padding: 2rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; }
-    .login-logo { background: var(--primary); color: white; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin: 0 auto 1rem; font-weight: bold; font-size: 1.5rem; }
-    .login-title { font-size: 1.875rem; font-weight: 700; text-align: center; color: #111827; }
-    .login-sub { text-align: center; color: var(--muted); margin-bottom: 2rem; font-size: 0.875rem; }
+    .login-box { background: white; width: 100%; max-width: 400px; padding: 2.5rem; border-radius: 2rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; }
     
-    .mesero-grid { display: grid; grid-cols: 2; gap: 0.75rem; grid-template-columns: repeat(2, 1fr); }
-    .btn { width: 100%; padding: 0.75rem; border-radius: 0.75rem; font-weight: 500; transition: all 0.2s; border: 1px solid #e5e7eb; }
+    /* ESTILOS DEL LOGO NUEVO */
+    .login-logo-container { text-align: center; margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center; }
+    .logo-img { max-width: 200px; height: auto; display: block; }
+    
+    .login-title { font-size: 2rem; font-weight: 700; text-align: center; color: #111827; margin-top: 1rem; }
+    .login-sub { text-align: center; color: var(--muted); margin-bottom: 2.5rem; font-size: 0.9rem; }
+    
+    .mesero-grid { display: grid; gap: 0.75rem; grid-template-columns: repeat(2, 1fr); }
+    .btn { width: 100%; padding: 0.75rem; border-radius: 0.75rem; font-weight: 500; transition: all 0.2s; border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: center; }
     .btn-secondary { background: white; color: #374151; }
     .btn-secondary:active { background: #f3f4f6; transform: scale(0.98); }
-    .btn-block { display: block; width: 100%; }
     
     /* PIN PAD Estilos */
-    .pin-dots { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
+    .pin-dots { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2.5rem; }
     .pin-dot { width: 16px; height: 16px; border: 2px solid #d1d5db; border-radius: 50%; }
     .pin-dot.filled { background: var(--primary); border-color: var(--primary); }
-    .pinpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
-    .pin-key { background: #f9fafb; border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 1rem; font-size: 1.25rem; font-weight: 600; }
+    .pinpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 2rem; }
+    .pin-key { background: #f9fafb; border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 1rem; font-size: 1.25rem; font-weight: 600; color: #374151; }
     .pin-key:active { background: #e5e7eb; }
-    .alert-error { background: #fee2e2; color: #b91c1c; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.875rem; text-align: center; }
+    
+    /* Estilo para los botones de meseros con hover */
+    .btn-mesero { border: 1.5px solid #e5e7eb; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+    .btn-mesero:hover { background-color: #f9fafb; border-color: #d1d5db; }
+    .btn-mesero:active { background-color: #e5e7eb; }
   </style>
 </head>
 <body>
 
 <div class="login-wrap">
   <div class="login-box">
-    <div class="login-logo">MS</div>
-    <h1 class="login-title">MarlyServe</h1>
-    <p class="login-sub">Sistema de punto de venta</p>
+    
+    <div class="login-logo-container">
+        <img src="logo.png" alt="Barbacoa Tio R" class="logo-img">
+        
+        <h1 class="login-title">MarlyServe</h1>
+        <p class="login-sub">Sistema de punto de venta</p>
+    </div>
 
     <div id="view-selector">
-      <p class="text-sm text-center mb-3 text-gray-500 font-medium">¿Quién eres?</p>
+      <p class="text-sm text-center mb-4 text-gray-500 font-medium tracking-wide">¿QUIÉN ERES?</p>
       <div id="meseros-grid" class="mesero-grid">
         </div>
-      <div class="border-t border-gray-100 mt-6 mb-4"></div>
-      <button class="btn btn-secondary flex items-center justify-center gap-2" onclick="seleccionarAdmin()">
-        🔐 Acceso administrador
+      <div class="border-t border-gray-100 mt-8 mb-4"></div>
+      <button class="btn btn-secondary flex items-center justify-center gap-2 hover:border-gray-300 transition-all" onclick="seleccionarAdmin()">
+        <span>🔐</span> Acceso administrador
       </button>
     </div>
 
     <div id="view-pin" style="display:none">
-      <p class="text-sm text-center mb-4 font-bold text-gray-700" id="pin-titulo">PIN</p>
+      <p class="text-sm text-center mb-4 font-bold text-gray-700 tracking-wider" id="pin-titulo">PIN</p>
       <div class="pin-dots">
         <div class="pin-dot" id="d0"></div>
         <div class="pin-dot" id="d1"></div>
         <div class="pin-dot" id="d2"></div>
         <div class="pin-dot" id="d3"></div>
       </div>
-      <div id="pin-error" class="alert-error mb-3" style="display:none"></div>
+      <div id="pin-error" class="bg-red-50 text-red-700 text-sm p-3 rounded-lg text-center mb-3 border border-red-100" style="display:none"></div>
       <div class="pinpad">
         <button class="pin-key" onclick="pinKey('1')">1</button>
         <button class="pin-key" onclick="pinKey('2')">2</button>
@@ -78,10 +90,11 @@
 
     <div id="view-dashboard" style="display:none">
         <h2 class="text-xl font-bold mb-4">¡Bienvenido!</h2>
-        <div id="folder-box" class="p-4 border-2 border-dashed rounded-xl mb-4">
-            <button onclick="createFolder()" class="w-full bg-orange-600 text-white py-3 rounded-lg font-bold">Crear Carpeta Compartida</button>
+        <div id="folder-box" class="p-4 border-2 border-dashed rounded-xl mb-4 text-center">
+            <p class="text-gray-500 mb-2">Ordenes compartidas</p>
+            <button onclick="createFolder()" class="w-full bg-orange-600 text-white py-3 rounded-lg font-bold">Crear Carpeta</button>
         </div>
-        <button onclick="location.reload()" class="text-sm text-gray-400 underline w-full text-center">Cerrar Sesión</button>
+        <button onclick="location.reload()" class="text-sm text-gray-400 underline w-full text-center mt-4">Cerrar Sesión</button>
     </div>
   </div>
 </div>
@@ -98,16 +111,17 @@
   let pinBuffer = "";
   let pinTarget = null;
 
-  // Renderizar meseros
+  // Renderizar meseros con el nuevo estilo btn-mesero
   const grid = document.getElementById("meseros-grid");
   meserosList.forEach(m => {
     const btn = document.createElement("button");
-    btn.className = "btn btn-secondary";
+    btn.className = "btn btn-secondary btn-mesero";
     btn.textContent = m.nombre;
     btn.onclick = () => seleccionarMesero(m);
     grid.appendChild(btn);
   });
 
+  // (Lógica de PIN sigue igual que la versión anterior, solo cambié el color de los 'dots' a rojo)
   function seleccionarMesero(m) {
     pinTarget = { tipo: "mesero", data: m };
     document.getElementById("pin-titulo").textContent = `PIN DE ${m.nombre.toUpperCase()}`;
@@ -144,7 +158,7 @@
     pinBuffer += k;
     actualizarDots();
     if (pinBuffer.length === 4) {
-      setTimeout(validarPin, 200); // Pequeña pausa para ver el último punto
+      setTimeout(validarPin, 200);
     }
   };
 
