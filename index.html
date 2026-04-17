@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarlyServe - POS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-stone-100 text-stone-900 font-sans">
+
+    <nav class="bg-orange-600 p-4 text-white shadow-lg flex justify-between items-center">
+        <h1 class="font-bold text-xl">🌮 Barbacoa Tío R</h1>
+        <div id="user-display" class="hidden">
+            <span id="username" class="text-sm mr-4 bg-orange-700 px-2 py-1 rounded"></span>
+            <button onclick="logout()" class="text-sm underline">Salir</button>
+        </div>
+    </nav>
+
+    <main class="p-6 max-w-4xl mx-auto">
+        <div id="login-screen" class="space-y-6">
+            <div class="bg-white p-8 rounded-xl shadow-md border border-stone-200">
+                <h2 class="text-2xl font-bold mb-6 text-center">Acceso al Sistema</h2>
+                <div class="space-y-4">
+                    <select id="role-select" class="w-full p-3 border rounded-lg">
+                        <option value="mesero">Mesero</option>
+                        <option value="admin">Administrador</option>
+                    </select>
+                    <input type="password" id="pin-input" placeholder="Ingresa tu PIN" class="w-full p-3 border rounded-lg">
+                    <button onclick="login()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-lg transition">Entrar</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboard" class="hidden space-y-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white p-4 rounded-lg shadow border-l-4 border-orange-500">
+                    <p class="text-xs text-stone-500 uppercase">Mesas Activas</p>
+                    <p class="text-2xl font-bold">0</p>
+                </div>
+                </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h3 class="font-bold mb-4">Gestión de Pedidos Compartidos</h3>
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="createFolder()" class="bg-stone-800 text-white px-4 py-2 rounded-lg">
+                        Crear Carpeta de Orden
+                    </button>
+                    <button onclick="registerSharedToken()" class="border-2 border-stone-800 px-4 py-2 rounded-lg">
+                        Registrar Token Externo
+                    </button>
+                </div>
+                <div id="folder-container" class="mt-6 hidden p-4 border-2 border-dashed border-stone-300 rounded-lg bg-stone-50">
+                    <p class="text-sm font-medium">📂 Carpeta Activa</p>
+                    <div id="token-display" class="mt-2 p-2 bg-orange-100 text-orange-800 font-mono text-center rounded">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Lógica de autenticación simple (basada en tu README)
+        const PINS = { "admin": "0000", "ana": "1111" };
+
+        function login() {
+            const role = document.getElementById('role-select').value;
+            const pin = document.getElementById('pin-input').value;
+
+            if (pin === PINS[role] || (role === 'mesero' && pin === "1111")) {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                document.getElementById('user-display').classList.remove('hidden');
+                document.getElementById('username').innerText = role.toUpperCase();
+            } else {
+                alert("PIN incorrecto");
+            }
+        }
+
+        function createFolder() {
+            const folder = document.getElementById('folder-container');
+            const tokenBox = document.getElementById('token-display');
+            const token = "TOKEN-" + Math.random().toString(36).substr(2, 5).toUpperCase();
+            
+            folder.classList.remove('hidden');
+            tokenBox.innerText = "Join Token: " + token;
+        }
+
+        function registerSharedToken() {
+            const token = prompt("Ingresa el token compartido:");
+            if(token) alert("Registrando acceso a la orden: " + token);
+        }
+
+        function logout() {
+            location.reload();
+        }
+    </script>
+</body>
+</html>
