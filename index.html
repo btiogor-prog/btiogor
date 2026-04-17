@@ -5,93 +5,108 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MarlyServe - POS</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .btn-mesero {
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-mesero:active {
+            transform: scale(0.95);
+            background-color: #f9fafb;
+        }
+    </style>
 </head>
-<body class="bg-stone-100 text-stone-900 font-sans">
+<body class="bg-white text-slate-800 font-sans min-h-screen flex flex-col items-center justify-center p-4">
 
-    <nav class="bg-orange-600 p-4 text-white shadow-lg flex justify-between items-center">
-        <h1 class="font-bold text-xl">Barbacoa Tío R</h1>
-        <div id="user-display" class="hidden">
-            <span id="username" class="text-sm mr-4 bg-orange-700 px-2 py-1 rounded"></span>
-            <button onclick="logout()" class="text-sm underline">Salir</button>
+    <div id="login-screen" class="w-full max-w-md text-center space-y-8">
+        
+        <div class="flex flex-col items-center">
+            <div class="w-20 h-20 bg-[#E85D04] rounded-full flex items-center justify-center mb-6 shadow-md">
+                <span class="text-white text-2xl font-bold italic">MS</span>
+            </div>
+            <h1 class="text-3xl font-bold text-[#2D3748]">MarlyServe</h1>
+            <p class="text-gray-500 mt-1">Sistema de punto de venta</p>
         </div>
-    </nav>
 
-    <main class="p-6 max-w-4xl mx-auto">
-        <div id="login-screen" class="space-y-6">
-            <div class="bg-white p-8 rounded-xl shadow-md border border-stone-200">
-                <h2 class="text-2xl font-bold mb-6 text-center">Acceso al Sistema</h2>
-                <div class="space-y-4">
-                    <select id="role-select" class="w-full p-3 border rounded-lg">
-                        <option value="mesero">Mesero</option>
-                        <option value="admin">Administrador</option>
-                    </select>
-                    <input type="password" id="pin-input" placeholder="Ingresa tu PIN" class="w-full p-3 border rounded-lg">
-                    <button onclick="login()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-lg transition">Entrar</button>
-                </div>
+        <div class="space-y-6">
+            <p class="text-gray-600 font-medium">¿Quién eres?</p>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="seleccionarMesero('Ana')" class="btn-mesero">Ana</button>
+                <button onclick="seleccionarMesero('Carlos')" class="btn-mesero">Carlos</button>
+                <button onclick="seleccionarMesero('Lupita')" class="btn-mesero">Lupita</button>
+                <button onclick="seleccionarMesero('Miguel')" class="btn-mesero">Miguel</button>
+            </div>
+
+            <hr class="border-t border-gray-200 my-8">
+
+            <button onclick="accesoAdmin()" class="w-full border border-gray-200 py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors">
+                <span>🔐</span> Acceso administrador
+            </button>
+        </div>
+    </div>
+
+    <div id="dashboard" class="hidden w-full max-w-4xl">
+        <div class="flex justify-between items-center mb-8 border-b pb-4">
+            <h2 class="text-2xl font-bold">Panel de Control - <span id="current-user" class="text-orange-600"></span></h2>
+            <button onclick="cerrarSesion()" class="text-gray-500 underline">Cerrar Sesión</button>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="p-6 border-2 border-dashed border-gray-300 rounded-2xl flex flex-col items-center justify-center space-y-4">
+                <p class="text-gray-500">Gestión de carpetas compartidas</p>
+                <button onclick="crearCarpeta()" class="bg-orange-600 text-white px-6 py-3 rounded-lg font-bold shadow-lg">Crear carpeta con Token</button>
+            </div>
+            <div class="p-6 bg-gray-50 rounded-2xl flex flex-col items-center justify-center space-y-4">
+                <p class="text-gray-500">¿Tienes un token externo?</p>
+                <button onclick="unirseToken()" class="border-2 border-gray-800 px-6 py-3 rounded-lg font-bold">Registrar Token</button>
             </div>
         </div>
-
-        <div id="dashboard" class="hidden space-y-6">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="bg-white p-4 rounded-lg shadow border-l-4 border-orange-500">
-                    <p class="text-xs text-stone-500 uppercase">Mesas Activas</p>
-                    <p class="text-2xl font-bold">0</p>
-                </div>
-                </div>
-
-            <div class="bg-white p-6 rounded-xl shadow-md">
-                <h3 class="font-bold mb-4">Gestión de Pedidos Compartidos</h3>
-                <div class="flex flex-wrap gap-4">
-                    <button onclick="createFolder()" class="bg-stone-800 text-white px-4 py-2 rounded-lg">
-                        Crear Carpeta de Orden
-                    </button>
-                    <button onclick="registerSharedToken()" class="border-2 border-stone-800 px-4 py-2 rounded-lg">
-                        Registrar Token Externo
-                    </button>
-                </div>
-                <div id="folder-container" class="mt-6 hidden p-4 border-2 border-dashed border-stone-300 rounded-lg bg-stone-50">
-                    <p class="text-sm font-medium">📂 Carpeta Activa</p>
-                    <div id="token-display" class="mt-2 p-2 bg-orange-100 text-orange-800 font-mono text-center rounded">
-                        </div>
-                </div>
-            </div>
-        </div>
-    </main>
+    </div>
 
     <script>
-        // Lógica de autenticación simple (basada en tu README)
-        const PINS = { "admin": "0000", "ana": "1111" };
+        function seleccionarMesero(nombre) {
+            const pin = prompt(`Hola ${nombre}, ingresa tu PIN:`);
+            // Aquí puedes validar el PIN (Ej: Ana=1111) 
+            if (pin) {
+                entrarAlSistema(nombre);
+            }
+        }
 
-        function login() {
-            const role = document.getElementById('role-select').value;
-            const pin = document.getElementById('pin-input').value;
-
-            if (pin === PINS[role] || (role === 'mesero' && pin === "1111")) {
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-                document.getElementById('user-display').classList.remove('hidden');
-                document.getElementById('username').innerText = role.toUpperCase();
+        function accesoAdmin() {
+            const pin = prompt("PIN de administrador:");
+            if (pin === "0000") { // PIN según tu manual 
+                entrarAlSistema("Administrador");
             } else {
                 alert("PIN incorrecto");
             }
         }
 
-        function createFolder() {
-            const folder = document.getElementById('folder-container');
-            const tokenBox = document.getElementById('token-display');
-            const token = "TOKEN-" + Math.random().toString(36).substr(2, 5).toUpperCase();
-            
-            folder.classList.remove('hidden');
-            tokenBox.innerText = "Join Token: " + token;
+        function entrarAlSistema(usuario) {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            document.getElementById('current-user').innerText = usuario;
         }
 
-        function registerSharedToken() {
-            const token = prompt("Ingresa el token compartido:");
-            if(token) alert("Registrando acceso a la orden: " + token);
-        }
-
-        function logout() {
+        function cerrarSesion() {
             location.reload();
+        }
+
+        function crearCarpeta() {
+            const token = Math.random().toString(36).substr(2, 6).toUpperCase();
+            alert(`Carpeta creada con éxito.\nToken generado: ${token}\nEste token servirá para unir otros dispositivos.`);
+        }
+
+        function unirseToken() {
+            const token = prompt("Ingresa el Token de la carpeta compartida:");
+            if (token) alert(`Te has unido a la carpeta: ${token}`);
         }
     </script>
 </body>
