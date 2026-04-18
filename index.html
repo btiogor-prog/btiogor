@@ -1,198 +1,1622 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Barbacoa Tio Gor</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    :root {
-      /* Color rojo de Barbacoa Tio R */
-      --primary: #CC0000; 
-      --muted: #6b7280;
-    }
-    .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #f9fafb; padding: 1rem; }
-    .login-box { background: white; width: 100%; max-width: 400px; padding: 2.5rem; border-radius: 2rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; }
-    
-    /* ESTILOS DEL LOGO NUEVO */
-    .login-logo-container { text-align: center; margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center; }
-    .logo-img { max-width: 200px; height: auto; display: block; }
-    
-    .login-title { font-size: 2rem; font-weight: 700; text-align: center; color: #111827; margin-top: 1rem; }
-    .login-sub { text-align: center; color: var(--muted); margin-bottom: 2.5rem; font-size: 0.9rem; }
-    
-    .mesero-grid { display: grid; gap: 0.75rem; grid-template-columns: repeat(2, 1fr); }
-    .btn { width: 100%; padding: 0.75rem; border-radius: 0.75rem; font-weight: 500; transition: all 0.2s; border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: center; }
-    .btn-secondary { background: white; color: #374151; }
-    .btn-secondary:active { background: #f3f4f6; transform: scale(0.98); }
-    
-    /* PIN PAD Estilos */
-    .pin-dots { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2.5rem; }
-    .pin-dot { width: 16px; height: 16px; border: 2px solid #d1d5db; border-radius: 50%; }
-    .pin-dot.filled { background: var(--primary); border-color: var(--primary); }
-    .pinpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 2rem; }
-    .pin-key { background: #f9fafb; border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 1rem; font-size: 1.25rem; font-weight: 600; color: #374151; }
-    .pin-key:active { background: #e5e7eb; }
-    
-    /* Estilo para los botones de meseros con hover */
-    .btn-mesero { border: 1.5px solid #e5e7eb; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
-    .btn-mesero:hover { background-color: #f9fafb; border-color: #d1d5db; }
-    .btn-mesero:active { background-color: #e5e7eb; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barbacoa Tío Gor – POS</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --red:#CC0000;--red-d:#aa0000;--red-l:#fee2e2;
+  --green:#16a34a;--amber:#d97706;--blue:#2563eb;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-300:#d1d5db;--gray-400:#9ca3af;--gray-500:#6b7280;
+  --gray-700:#374151;--gray-800:#1f2937;--gray-900:#111827;
+  --font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;
+}
+body{font-family:var(--font-body);background:#f1f1f1;min-height:100vh;}
+.wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem;}
+.card{background:#fff;border-radius:1.5rem;box-shadow:0 8px 32px rgba(0,0,0,.08);border:1px solid var(--gray-200);}
+.login-card{width:100%;max-width:400px;padding:2.5rem;}
+.dash-card{width:100%;max-width:1300px;padding:1.5rem;}
+h1,h2,h3{font-family:var(--font-head);}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.65rem 1.1rem;border-radius:.75rem;font-size:.85rem;font-weight:600;border:1px solid transparent;cursor:pointer;transition:.15s;}
+.btn-primary{background:var(--red);color:#fff;border-color:var(--red);}
+.btn-primary:hover{background:var(--red-d);}
+.btn-outline{background:#fff;color:var(--gray-700);border-color:var(--gray-200);}
+.btn-outline:hover{border-color:var(--gray-400);}
+.btn-green{background:var(--green);color:#fff;}
+.btn-sm{padding:.4rem .8rem;font-size:.75rem;}
+.pin-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--gray-300);}
+.pin-dot.filled{background:var(--red);border-color:var(--red);}
+.pinpad{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;}
+.pkey{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:.75rem;padding:1.1rem;font-size:1.2rem;font-weight:700;color:var(--gray-800);cursor:pointer;font-family:var(--font-head);}
+.pkey:hover{background:var(--gray-100);}
+.pkey:active{transform:scale(.96);}
+.mesero-btn{background:#fff;border:1.5px solid var(--gray-200);border-radius:1rem;padding:.9rem;font-weight:600;cursor:pointer;transition:.15s;font-family:var(--font-head);font-size:.95rem;}
+.mesero-btn:hover{border-color:var(--red);color:var(--red);}
+.nav-top{display:flex;gap:.5rem;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:1rem;padding:.4rem;}
+.nav-btn{flex:1;padding:.6rem .4rem;border-radius:.6rem;font-size:.7rem;font-weight:700;font-family:var(--font-head);letter-spacing:.03em;text-transform:uppercase;border:none;background:transparent;cursor:pointer;color:var(--gray-500);transition:.15s;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.nav-btn.active,.nav-btn:hover{background:#fff;color:var(--red);box-shadow:0 2px 8px rgba(0,0,0,.07);}
+.nav-btn span.icon{font-size:1.2rem;}
+.mesa-card{background:#fff;border:1.5px solid var(--gray-200);border-radius:1rem;padding:.9rem;cursor:pointer;transition:.15s;text-align:center;}
+.mesa-card:hover{border-color:var(--red);box-shadow:0 4px 12px rgba(204,0,0,.1);}
+.mesa-card.libre{border-color:var(--gray-200);}
+.mesa-card.ocupada{border-color:#f59e0b;background:#fffbeb;}
+.mesa-card.cerrar{border-color:#16a34a;background:#f0fdf4;}
+.badge{display:inline-flex;align-items:center;padding:.2rem .6rem;border-radius:99px;font-size:.7rem;font-weight:700;}
+.badge-green{background:#dcfce7;color:#16a34a;}
+.badge-amber{background:#fef3c7;color:#d97706;}
+.badge-red{background:#fee2e2;color:#CC0000;}
+.badge-blue{background:#dbeafe;color:#2563eb;}
+.input{width:100%;padding:.65rem .9rem;border:1.5px solid var(--gray-200);border-radius:.75rem;font-size:.875rem;font-family:var(--font-body);outline:none;transition:.15s;}
+.input:focus{border-color:var(--red);}
+.select{appearance:none;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7280' stroke-width='1.5' fill='none'/%3E%3C/svg%3E") no-repeat right .8rem center;}
+.table-row{display:grid;gap:.5rem;align-items:center;}
+.chip{padding:.25rem .65rem;border-radius:99px;font-size:.72rem;font-weight:600;}
+.section-title{font-family:var(--font-head);font-size:1.1rem;font-weight:700;color:var(--gray-900);margin-bottom:1rem;}
+.admin-tab-content{display:none;}
+.admin-tab-content.active{display:block;}
+.admin-nav-item{width:100%;text-align:left;padding:.65rem 1rem;border-radius:.6rem;font-size:.82rem;font-weight:600;border:none;background:transparent;cursor:pointer;color:var(--gray-700);margin-bottom:.15rem;transition:.15s;font-family:var(--font-body);}
+.admin-nav-item:hover{background:var(--red-l);color:var(--red);}
+.admin-nav-item.active{background:var(--red);color:#fff;}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;display:flex;align-items:center;justify-content:center;padding:1rem;}
+.modal-box{background:#fff;border-radius:1.5rem;padding:2rem;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;}
+.cronometer{font-family:var(--font-head);font-size:2rem;font-weight:800;}
+.crono-green{color:var(--green);}
+.crono-amber{color:var(--amber);}
+.crono-red{color:var(--red);}
+.ticket-preview{background:#fff;border:2px dashed var(--gray-300);border-radius:1rem;padding:1.5rem;font-family:'Courier New',monospace;font-size:.8rem;line-height:1.8;}
+.qty-btn{width:28px;height:28px;border-radius:.4rem;border:1.5px solid var(--gray-200);background:#fff;font-size:1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.qty-btn:hover{background:var(--gray-100);}
+/* Animations */
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.fade-in{animation:fadeIn .2s ease;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.pulse{animation:pulse 1s infinite;}
+/* Print */
+@media print{body *{visibility:hidden;}.print-area,.print-area *{visibility:visible;}.print-area{position:fixed;inset:0;padding:1rem;}}
+</style>
 </head>
 <body>
 
-<div class="login-wrap">
-  <div class="login-box">
-    
-    <div class="login-logo-container">
-        <img src="logo.png" alt="Barbacoa Tio R" class="logo-img">
+<!-- ============================================================
+     ESTADO GLOBAL (fuente de verdad)
+============================================================ -->
+<script>
+const DB = {
+  /* ---- Colaboradores ---- */
+  colaboradores: [
+    {id:1,nombre:"Ana",rol:"mesera",pin:"1111",activo:true},
+    {id:2,nombre:"Carlos",rol:"mesero",pin:"2222",activo:true}
+  ],
+  adminPin: "0000",
+  nextColId: 3,
 
-      <h1 class="login-title">Bienvenido/a</h1>
-        <p class="login-sub">Sistema POS</p>
+  /* ---- Menú ---- */
+  categorias: ["Barbacoa","Bebidas","Acompañamientos","Postres"],
+  menu: [
+    {id:1,nombre:"Kilo de Barbacoa",cat:"Barbacoa",precio:550,insumos:[{insumo:"Barbacoa Cruda",qty:1000,unidad:"g"}]},
+    {id:2,nombre:"½ Kilo de Barbacoa",cat:"Barbacoa",precio:290,insumos:[{insumo:"Barbacoa Cruda",qty:500,unidad:"g"}]},
+    {id:3,nombre:"Taco de Barbacoa",cat:"Barbacoa",precio:35,insumos:[{insumo:"Barbacoa Cruda",qty:100,unidad:"g"},{insumo:"Tortillas",qty:2,unidad:"pz"}]},
+    {id:4,nombre:"Consomé",cat:"Acompañamientos",precio:45,insumos:[{insumo:"Consomé",qty:250,unidad:"ml"}]},
+    {id:5,nombre:"Refresco",cat:"Bebidas",precio:25,insumos:[{insumo:"Refresco",qty:355,unidad:"ml"}]},
+    {id:6,nombre:"Agua Natural",cat:"Bebidas",precio:15,insumos:[{insumo:"Agua",qty:500,unidad:"ml"}]},
+    {id:7,nombre:"Tortillas (doz)",cat:"Acompañamientos",precio:20,insumos:[{insumo:"Tortillas",qty:12,unidad:"pz"}]},
+    {id:8,nombre:"Salsa Verde",cat:"Acompañamientos",precio:10,insumos:[{insumo:"Salsa Verde",qty:100,unidad:"ml"}]},
+  ],
+  nextMenuId: 9,
+
+  /* ---- Inventario ---- */
+  inventario: [
+    {id:1,nombre:"Barbacoa Cruda",stock:15000,unidad:"g",alerta:3000},
+    {id:2,nombre:"Tortillas",stock:500,unidad:"pz",alerta:50},
+    {id:3,nombre:"Consomé",stock:10000,unidad:"ml",alerta:2000},
+    {id:4,nombre:"Refresco",stock:48,unidad:"pz",alerta:12},
+    {id:5,nombre:"Agua",stock:20000,unidad:"ml",alerta:3000},
+    {id:6,nombre:"Salsa Verde",stock:3000,unidad:"ml",alerta:500},
+  ],
+  nextInvId: 7,
+
+  /* ---- Mesas ---- */
+  totalMesas: 15,
+
+  /* ---- Órdenes activas ---- */
+  ordenes: [], /* {id,tipo:'mesa'|'llevar',mesaNum,colId,cliente,items:[{menuId,nombre,precio,qty,nota}],estado:'abierta'|'cocina'|'lista'|'cobrada',inicio,entrega,propina,pago} */
+  nextOrdenId: 1,
+
+  /* ---- Historial para cortes ---- */
+  historial: [], /* órdenes cobradas */
+  cortesMesero: {}, /* colId -> {propinas,ordenes,ventas} */
+};
+
+/* helpers */
+const nuevoId = (arr, key='id') => arr.length ? Math.max(...arr.map(x=>x[key]))+1 : 1;
+function saveDB(){try{localStorage.setItem('pos_db',JSON.stringify(DB));}catch(e){}}
+function loadDB(){try{const d=localStorage.getItem('pos_db');if(d){const p=JSON.parse(d);Object.assign(DB,p);}}catch(e){}}
+loadDB();
+</script>
+
+<!-- ============================================================
+     WRAP
+============================================================ -->
+<div class="wrap" id="app-wrap">
+<div id="main-card" class="card login-card">
+
+  <!-- ---- LOGO / HEADER ---- -->
+  <div id="login-header" style="text-align:center;margin-bottom:1.5rem;">
+    <div style="font-family:var(--font-head);font-size:2rem;font-weight:800;color:var(--red);letter-spacing:-.03em;">BARBACOA</div>
+    <div style="font-family:var(--font-head);font-size:1rem;font-weight:600;color:var(--gray-500);letter-spacing:.15em;text-transform:uppercase;">Tío Gor</div>
+    <div style="width:40px;height:3px;background:var(--red);border-radius:99px;margin:.5rem auto;"></div>
+    <p style="font-size:.8rem;color:var(--gray-400);margin-top:.4rem;">Sistema POS</p>
+  </div>
+
+  <!-- ---- VIEW: selector de usuario ---- -->
+  <div id="view-selector">
+    <p style="font-size:.7rem;font-weight:700;text-align:center;color:var(--gray-400);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;">¿Quién eres?</p>
+    <div id="meseros-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;"></div>
+    <div style="border-top:1px solid var(--gray-200);margin:1.2rem 0;"></div>
+    <button class="btn btn-outline" style="width:100%;" onclick="seleccionarAdmin()">⚙️ Acceso Administrador</button>
+  </div>
+
+  <!-- ---- VIEW: PIN ---- -->
+  <div id="view-pin" style="display:none;">
+    <p id="pin-titulo" style="font-family:var(--font-head);font-size:.8rem;font-weight:700;text-align:center;letter-spacing:.12em;text-transform:uppercase;color:var(--gray-600);margin-bottom:1.2rem;"></p>
+    <div style="display:flex;justify-content:center;gap:.9rem;margin-bottom:2rem;" id="pin-dots">
+      <div class="pin-dot" id="d0"></div><div class="pin-dot" id="d1"></div><div class="pin-dot" id="d2"></div><div class="pin-dot" id="d3"></div>
     </div>
-
-    <div id="view-selector">
-      <p class="text-sm text-center mb-4 text-gray-500 font-medium tracking-wide">¿QUIÉN ERES?</p>
-      <div id="meseros-grid" class="mesero-grid">
-        </div>
-      <div class="border-t border-gray-100 mt-8 mb-4"></div>
-      <button class="btn btn-secondary flex items-center justify-center gap-2 hover:border-gray-300 transition-all" onclick="seleccionarAdmin()">
-        <span></span> Acceso administrador
-      </button>
+    <div class="pinpad" style="margin-bottom:1rem;">
+      <button class="pkey" onclick="pinKey('1')">1</button><button class="pkey" onclick="pinKey('2')">2</button><button class="pkey" onclick="pinKey('3')">3</button>
+      <button class="pkey" onclick="pinKey('4')">4</button><button class="pkey" onclick="pinKey('5')">5</button><button class="pkey" onclick="pinKey('6')">6</button>
+      <button class="pkey" onclick="pinKey('7')">7</button><button class="pkey" onclick="pinKey('8')">8</button><button class="pkey" onclick="pinKey('9')">9</button>
+      <button class="pkey" onclick="pinKey('←')">←</button><button class="pkey" onclick="pinKey('0')">0</button><button class="pkey" onclick="pinKey('✓')">✓</button>
     </div>
+    <p id="pin-error" style="text-align:center;color:var(--red);font-size:.8rem;font-weight:600;min-height:1.2em;"></p>
+    <button class="btn btn-outline" style="width:100%;margin-top:.5rem;" onclick="volverSelector()">← Volver</button>
+  </div>
 
-    <div id="view-pin" style="display:none">
-      <p class="text-sm text-center mb-4 font-bold text-gray-700 tracking-wider" id="pin-titulo">PIN</p>
-      <div class="pin-dots">
-        <div class="pin-dot" id="d0"></div>
-        <div class="pin-dot" id="d1"></div>
-        <div class="pin-dot" id="d2"></div>
-        <div class="pin-dot" id="d3"></div>
+  <!-- ---- VIEW: DASHBOARD ---- -->
+  <div id="view-dashboard" style="display:none;">
+
+    <!-- Info colaborador -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+      <div>
+        <div id="dash-user" style="font-family:var(--font-head);font-size:1rem;font-weight:700;color:var(--gray-900);"></div>
+        <div id="dash-role" style="font-size:.72rem;color:var(--gray-400);text-transform:uppercase;letter-spacing:.08em;"></div>
       </div>
-      <div id="pin-error" class="bg-red-50 text-red-700 text-sm p-3 rounded-lg text-center mb-3 border border-red-100" style="display:none"></div>
-      <div class="pinpad">
-        <button class="pin-key" onclick="pinKey('1')">1</button>
-        <button class="pin-key" onclick="pinKey('2')">2</button>
-        <button class="pin-key" onclick="pinKey('3')">3</button>
-        <button class="pin-key" onclick="pinKey('4')">4</button>
-        <button class="pin-key" onclick="pinKey('5')">5</button>
-        <button class="pin-key" onclick="pinKey('6')">6</button>
-        <button class="pin-key" onclick="pinKey('7')">7</button>
-        <button class="pin-key" onclick="pinKey('8')">8</button>
-        <button class="pin-key" onclick="pinKey('9')">9</button>
-        <button class="pin-key" onclick="pinKey('←')">←</button>
-        <button class="pin-key" onclick="pinKey('0')">0</button>
-        <button class="pin-key" onclick="pinKey('✓')">✓</button>
-      </div>
-      <button class="btn btn-secondary w-full" onclick="volverSelector()">← Volver</button>
+      <button class="btn btn-outline btn-sm" onclick="cerrarSesion()">Cerrar sesión</button>
     </div>
 
-    <div id="view-dashboard" style="display:none">
-        <h2 class="text-xl font-bold mb-4">¡Bienvenido!</h2>
-        <div id="folder-box" class="p-4 border-2 border-dashed rounded-xl mb-4 text-center">
-            <p class="text-gray-500 mb-2">Ordenes compartidas</p>
-            <button onclick="createFolder()" class="w-full bg-orange-600 text-white py-3 rounded-lg font-bold">Crear Carpeta</button>
+    <!-- Nav colaborador -->
+    <div id="nav-colaborador" class="nav-top" style="margin-bottom:1rem;">
+      <button class="nav-btn active" id="nb-mesas" onclick="switchView('mesas',this)"><span class="icon">🪑</span>Mesas</button>
+      <button class="nav-btn" id="nb-orden" onclick="switchView('orden',this)"><span class="icon">📋</span>Orden</button>
+      <button class="nav-btn" id="nb-cocina" onclick="switchView('cocina',this)"><span class="icon">👨‍🍳</span>Cocina</button>
+      <button class="nav-btn" id="nb-cobrar" onclick="switchView('cobrar',this)"><span class="icon">💳</span>Cobrar</button>
+      <button class="nav-btn" id="nb-corte" onclick="switchView('corte',this)"><span class="icon">📊</span>Corte</button>
+    </div>
+
+    <!-- =================== MESAS =================== -->
+    <div id="view-mesas" class="dash-view fade-in">
+      <!-- Mis mesas activas -->
+      <div id="mis-mesas-bar" style="margin-bottom:1rem;display:flex;gap:.5rem;flex-wrap:wrap;"></div>
+      <!-- Grid mesas -->
+      <div id="grid-mesas" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:.75rem;margin-bottom:1rem;"></div>
+      <!-- Botón para llevar -->
+      <button class="btn btn-primary" style="width:100%;" onclick="nuevaOrdenLlevar()">🛍️ Orden para Llevar</button>
+    </div>
+
+    <!-- =================== ORDEN =================== -->
+    <div id="view-orden" class="dash-view" style="display:none;">
+      <!-- Header orden -->
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem;">
+        <div>
+          <div id="orden-titulo" style="font-family:var(--font-head);font-size:1.2rem;font-weight:800;color:var(--red);"></div>
+          <div id="orden-sub" style="font-size:.75rem;color:var(--gray-400);"></div>
         </div>
-        <button onclick="location.reload()" class="text-sm text-gray-400 underline w-full text-center mt-4">Cerrar Sesión</button>
+        <!-- Cronómetro para llevar -->
+        <div id="crono-block" style="display:none;text-align:right;">
+          <div class="cronometer crono-green" id="crono-display">15:00</div>
+          <div style="font-size:.65rem;color:var(--gray-400);">Entrega estimada: <strong id="crono-hora"></strong></div>
+        </div>
+      </div>
+
+      <!-- Mis órdenes activas (bar) -->
+      <div id="orden-tabs-bar" style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.75rem;"></div>
+
+      <!-- Nombre cliente -->
+      <div style="display:flex;gap:.5rem;margin-bottom:.75rem;align-items:center;">
+        <input class="input" id="cliente-nombre" placeholder="Nombre del cliente" style="flex:1;" oninput="actualizarOrdenActiva()">
+        <span id="orden-estado-badge" class="badge badge-amber">Abierta</span>
+      </div>
+
+      <!-- Items de la orden -->
+      <div id="orden-items" style="margin-bottom:.75rem;border:1.5px solid var(--gray-200);border-radius:1rem;overflow:hidden;"></div>
+
+      <!-- Botón agregar producto -->
+      <button class="btn btn-outline" style="width:100%;margin-bottom:.75rem;" onclick="abrirMenuSelector()">＋ Agregar platillo</button>
+
+      <!-- Total -->
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:.75rem 1rem;background:var(--gray-50);border-radius:.75rem;margin-bottom:1rem;">
+        <span style="font-family:var(--font-head);font-size:1rem;font-weight:700;">Total</span>
+        <span id="orden-total" style="font-family:var(--font-head);font-size:1.2rem;font-weight:800;color:var(--red);">$0.00</span>
+      </div>
+
+      <!-- Acciones -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;">
+        <button class="btn btn-primary" onclick="mandarACocinaYCaja()">📤 Mandar a Cocina & Caja</button>
+        <button class="btn btn-outline" onclick="switchView('mesas',document.getElementById('nb-mesas'))">← Volver a mesas</button>
+      </div>
+    </div>
+
+    <!-- =================== COCINA =================== -->
+    <div id="view-cocina" class="dash-view" style="display:none;">
+      <div class="section-title">👨‍🍳 Pantalla de Cocina</div>
+      <div id="cocina-lista" style="display:grid;gap:.75rem;"></div>
+    </div>
+
+    <!-- =================== COBRAR =================== -->
+    <div id="view-cobrar" class="dash-view" style="display:none;">
+      <div class="section-title">💳 Cobrar Cuenta</div>
+      <!-- Seleccionar orden -->
+      <div id="cobrar-select" style="margin-bottom:1rem;">
+        <label style="font-size:.8rem;font-weight:600;color:var(--gray-500);display:block;margin-bottom:.4rem;">Selecciona la orden a cobrar:</label>
+        <select class="input select" id="cobrar-orden-select" onchange="cargarCobrar()">
+          <option value="">-- Elige una orden --</option>
+        </select>
+      </div>
+      <div id="cobrar-detalle" style="display:none;">
+        <div id="cobrar-items-resumen" style="margin-bottom:1rem;"></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:1rem;font-weight:700;">
+          <span>Subtotal:</span><span id="cobrar-subtotal"></span>
+        </div>
+        <!-- Forma de pago -->
+        <div style="margin-bottom:.75rem;">
+          <label style="font-size:.8rem;font-weight:600;color:var(--gray-500);display:block;margin-bottom:.4rem;">Forma de pago:</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;" id="pago-btns">
+            <button class="btn btn-outline pago-btn" onclick="seleccionarPago('efectivo')">💵 Efectivo</button>
+            <button class="btn btn-outline pago-btn" onclick="seleccionarPago('tarjeta')">💳 Tarjeta</button>
+            <button class="btn btn-outline pago-btn" onclick="seleccionarPago('transferencia')">📲 Transferencia</button>
+            <button class="btn btn-outline pago-btn" onclick="seleccionarPago('mixto')">🔀 Mixto</button>
+          </div>
+        </div>
+        <!-- Mixto -->
+        <div id="pago-mixto-block" style="display:none;margin-bottom:.75rem;display:grid;grid-template-columns:1fr 1fr;gap:.5rem;">
+          <div>
+            <label style="font-size:.75rem;font-weight:600;color:var(--gray-500);">Efectivo:</label>
+            <input class="input" type="number" id="mix-efectivo" placeholder="$0.00" min="0" oninput="calcMixto()">
+          </div>
+          <div>
+            <label style="font-size:.75rem;font-weight:600;color:var(--gray-500);">Transferencia:</label>
+            <input class="input" type="number" id="mix-transferencia" placeholder="$0.00" min="0" oninput="calcMixto()">
+          </div>
+          <div id="mix-faltante" style="grid-column:1/-1;font-size:.8rem;font-weight:600;color:var(--red);"></div>
+        </div>
+        <!-- Monto recibido / cambio -->
+        <div id="pago-efectivo-block" style="display:none;margin-bottom:.75rem;">
+          <label style="font-size:.8rem;font-weight:600;color:var(--gray-500);display:block;margin-bottom:.4rem;">Monto recibido:</label>
+          <input class="input" type="number" id="pago-recibido" placeholder="$0.00" min="0" oninput="calcCambio()">
+          <div id="cambio-display" style="margin-top:.5rem;font-weight:700;color:var(--green);font-size:1rem;"></div>
+          <div id="faltante-display" style="margin-top:.5rem;font-weight:700;color:var(--red);font-size:1rem;"></div>
+        </div>
+        <!-- Propina -->
+        <div style="margin-bottom:.75rem;">
+          <label style="font-size:.8rem;font-weight:600;color:var(--gray-500);display:block;margin-bottom:.4rem;">Propina (opcional):</label>
+          <input class="input" type="number" id="cobrar-propina" placeholder="$0.00" min="0">
+        </div>
+        <!-- Acciones cobro -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.75rem;">
+          <button class="btn btn-primary" onclick="procesarCobro()">✅ Cobrar</button>
+          <button class="btn btn-outline" onclick="imprimirTicket()">🖨️ Ver Ticket</button>
+        </div>
+        <!-- Nota factura -->
+        <div style="background:var(--gray-50);border-radius:.75rem;padding:.75rem;font-size:.75rem;color:var(--gray-500);border:1px solid var(--gray-200);">
+          🧾 <strong>¿Necesitas factura?</strong> Visita <span style="color:var(--blue);font-weight:600;">facturacion.tiogor.mx</span> con tu ticket y RFC.
+        </div>
+      </div>
+    </div>
+
+    <!-- =================== CORTE (colaborador) =================== -->
+    <div id="view-corte" class="dash-view" style="display:none;">
+      <div class="section-title">📊 Mi Resumen del Día</div>
+      <div id="corte-data" style="display:grid;gap:.75rem;margin-bottom:1rem;"></div>
+      <!-- Tienda interna -->
+      <div style="border-top:1px solid var(--gray-200);padding-top:1rem;margin-top:.5rem;">
+        <div style="font-family:var(--font-head);font-size:.95rem;font-weight:700;margin-bottom:.75rem;">🛒 Tienda Interna (precio colaborador)</div>
+        <p style="font-size:.75rem;color:var(--gray-500);margin-bottom:.75rem;">Compra del menú con 30% descuento. Se descuenta de tus propinas del día.</p>
+        <div id="tienda-grid" style="display:grid;gap:.5rem;"></div>
+        <div id="tienda-carrito" style="margin-top:.75rem;display:none;">
+          <div style="font-size:.8rem;font-weight:700;margin-bottom:.4rem;">Carrito:</div>
+          <div id="tienda-items" style="margin-bottom:.5rem;"></div>
+          <div style="display:flex;justify-content:space-between;font-weight:700;margin-bottom:.5rem;font-size:.9rem;">
+            <span>Total tienda:</span><span id="tienda-total">$0.00</span>
+          </div>
+          <button class="btn btn-primary btn-sm" style="width:100%;" onclick="confirmarCompra()">Confirmar compra</button>
+        </div>
+      </div>
+      <button class="btn btn-green" style="width:100%;margin-top:1.5rem;" onclick="enviarCorte()">📤 Enviar Corte al Administrador</button>
+    </div>
+
+    <!-- =================== ADMIN =================== -->
+    <div id="view-admin" class="dash-view" style="display:none;">
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        <!-- Sidebar admin nav (horizontal en mobile) -->
+        <div style="display:flex;gap:.4rem;flex-wrap:wrap;">
+          <button class="admin-nav-item active" onclick="tabAdmin('tab-menu',this)">🍽 Menú</button>
+          <button class="admin-nav-item" onclick="tabAdmin('tab-personal',this)">👥 Personal</button>
+          <button class="admin-nav-item" onclick="tabAdmin('tab-mesas-admin',this)">🪑 Mesas</button>
+          <button class="admin-nav-item" onclick="tabAdmin('tab-inventario',this)">📦 Inventario</button>
+          <button class="admin-nav-item" onclick="tabAdmin('tab-cortes-admin',this)">💰 Cortes</button>
+          <button class="admin-nav-item" onclick="tabAdmin('tab-reportes',this)">📈 Reportes</button>
+          <button class="admin-nav-item" onclick="tabAdmin('tab-config-admin',this)">⚙️ Config</button>
+        </div>
+        <!-- Contenido tabs admin -->
+        <div style="background:#fff;border:1.5px solid var(--gray-200);border-radius:1rem;padding:1.25rem;">
+
+          <!-- TAB: MENÚ -->
+          <div id="tab-menu" class="admin-tab-content active">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem;">
+              <div class="section-title" style="margin:0;">Categorías y Platillos</div>
+              <div style="display:flex;gap:.5rem;">
+                <button class="btn btn-outline btn-sm" onclick="abrirModalCategoria()">+ Categoría</button>
+                <button class="btn btn-primary btn-sm" onclick="abrirModalPlatillo(null)">+ Platillo</button>
+              </div>
+            </div>
+            <!-- Categorías -->
+            <div id="admin-categorias" style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem;"></div>
+            <!-- Tabla menú -->
+            <div style="overflow-x:auto;">
+              <table style="width:100%;font-size:.82rem;border-collapse:collapse;" id="tabla-menu">
+                <thead><tr style="border-bottom:2px solid var(--gray-200);">
+                  <th style="text-align:left;padding:.5rem .4rem;font-size:.7rem;color:var(--gray-400);text-transform:uppercase;">Categoría</th>
+                  <th style="text-align:left;padding:.5rem .4rem;">Nombre</th>
+                  <th style="text-align:left;padding:.5rem .4rem;">Precio</th>
+                  <th style="text-align:left;padding:.5rem .4rem;"></th>
+                </tr></thead>
+                <tbody id="menu-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB: PERSONAL -->
+          <div id="tab-personal" class="admin-tab-content">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+              <div class="section-title" style="margin:0;">Colaboradores</div>
+              <button class="btn btn-primary btn-sm" onclick="abrirModalColaborador(null)">+ Dar de alta</button>
+            </div>
+            <div id="admin-personal"></div>
+          </div>
+
+          <!-- TAB: MESAS ADMIN -->
+          <div id="tab-mesas-admin" class="admin-tab-content">
+            <div class="section-title">Configuración de Mesas</div>
+            <div style="display:flex;gap:.5rem;align-items:center;margin-bottom:1rem;">
+              <button class="btn btn-primary" onclick="agregarMesa()">＋ Agregar</button>
+              <button class="btn btn-outline" onclick="quitarMesa()">－ Quitar</button>
+              <span style="font-size:.85rem;color:var(--gray-500);">Total: <strong id="total-mesas-admin"></strong> mesas</span>
+            </div>
+            <div id="admin-grid-mesas" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:.5rem;"></div>
+          </div>
+
+          <!-- TAB: INVENTARIO -->
+          <div id="tab-inventario" class="admin-tab-content">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+              <div class="section-title" style="margin:0;">Control de Inventario</div>
+              <button class="btn btn-primary btn-sm" onclick="abrirModalInsumo(null)">+ Insumo</button>
+            </div>
+            <div id="alertas-inventario" style="margin-bottom:.75rem;"></div>
+            <div style="overflow-x:auto;">
+              <table style="width:100%;font-size:.82rem;border-collapse:collapse;" id="tabla-inv">
+                <thead><tr style="border-bottom:2px solid var(--gray-200);">
+                  <th style="text-align:left;padding:.5rem;">Insumo</th>
+                  <th style="text-align:left;padding:.5rem;">Stock</th>
+                  <th style="text-align:left;padding:.5rem;">Unidad</th>
+                  <th style="text-align:left;padding:.5rem;">Alerta</th>
+                  <th style="text-align:left;padding:.5rem;"></th>
+                </tr></thead>
+                <tbody id="inv-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB: CORTES ADMIN -->
+          <div id="tab-cortes-admin" class="admin-tab-content">
+            <div class="section-title">Cortes de Caja</div>
+            <div id="admin-cortes"></div>
+          </div>
+
+          <!-- TAB: REPORTES -->
+          <div id="tab-reportes" class="admin-tab-content">
+            <div class="section-title">Reportes</div>
+            <div style="display:grid;gap:.5rem;">
+              <button class="btn btn-outline" style="justify-content:space-between;" onclick="generarReporteVentas()">📄 Reporte de Ventas del Día <span>📥</span></button>
+              <button class="btn btn-outline" style="justify-content:space-between;" onclick="generarReporteInventario()">📄 Reporte de Inventario <span>📥</span></button>
+              <button class="btn btn-outline" style="justify-content:space-between;" onclick="compartirReporteCompleto()">📊 Reporte Completo (compartir) <span>📤</span></button>
+            </div>
+            <div id="reporte-preview" style="margin-top:1rem;"></div>
+          </div>
+
+          <!-- TAB: CONFIG ADMIN -->
+          <div id="tab-config-admin" class="admin-tab-content">
+            <div class="section-title">Cambiar PIN de Administrador</div>
+            <div style="display:grid;gap:.6rem;max-width:300px;">
+              <input class="input" type="password" id="pin-actual" placeholder="PIN Actual (4 dígitos)" maxlength="4">
+              <input class="input" type="password" id="pin-nuevo" placeholder="PIN Nuevo (4 dígitos)" maxlength="4">
+              <input class="input" type="password" id="pin-confirm" placeholder="Confirmar PIN Nuevo" maxlength="4">
+              <button class="btn btn-primary" onclick="cambiarPinAdmin()">Actualizar PIN</button>
+              <div id="pin-admin-msg" style="font-size:.8rem;font-weight:600;"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /view-dashboard -->
+
+</div><!-- /main-card -->
+</div><!-- /app-wrap -->
+
+<!-- ============================================================
+     MODALES
+============================================================ -->
+
+<!-- Modal: Selector de menú para orden -->
+<div id="modal-menu" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+      <div style="font-family:var(--font-head);font-weight:700;font-size:1.1rem;">Agregar Platillo</div>
+      <button class="btn btn-outline btn-sm" onclick="cerrarModal('modal-menu')">✕</button>
+    </div>
+    <input class="input" id="menu-search" placeholder="Buscar platillo..." oninput="filtrarMenu()" style="margin-bottom:.75rem;">
+    <div id="modal-menu-cats" style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.75rem;"></div>
+    <div id="modal-menu-lista" style="display:grid;gap:.4rem;max-height:55vh;overflow-y:auto;"></div>
+  </div>
+</div>
+
+<!-- Modal: Platillo (crear/editar) -->
+<div id="modal-platillo" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+      <div style="font-family:var(--font-head);font-weight:700;">Platillo</div>
+      <button class="btn btn-outline btn-sm" onclick="cerrarModal('modal-platillo')">✕</button>
+    </div>
+    <input type="hidden" id="p-id">
+    <div style="display:grid;gap:.6rem;">
+      <input class="input" id="p-nombre" placeholder="Nombre del platillo">
+      <input class="input" id="p-precio" type="number" placeholder="Precio" min="0">
+      <select class="input select" id="p-cat">
+        <option value="">-- Categoría --</option>
+      </select>
+      <button class="btn btn-primary" onclick="guardarPlatillo()">Guardar</button>
     </div>
   </div>
 </div>
 
+<!-- Modal: Categoría -->
+<div id="modal-categoria" class="modal-overlay" style="display:none;">
+  <div class="modal-box" style="max-width:320px;">
+    <div style="font-family:var(--font-head);font-weight:700;margin-bottom:1rem;">Nueva Categoría</div>
+    <input class="input" id="nueva-cat" placeholder="Nombre de la categoría" style="margin-bottom:.75rem;">
+    <button class="btn btn-primary" style="width:100%;" onclick="guardarCategoria()">Agregar</button>
+    <button class="btn btn-outline" style="width:100%;margin-top:.5rem;" onclick="cerrarModal('modal-categoria')">Cancelar</button>
+  </div>
+</div>
+
+<!-- Modal: Colaborador -->
+<div id="modal-colaborador" class="modal-overlay" style="display:none;">
+  <div class="modal-box" style="max-width:360px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+      <div style="font-family:var(--font-head);font-weight:700;">Colaborador</div>
+      <button class="btn btn-outline btn-sm" onclick="cerrarModal('modal-colaborador')">✕</button>
+    </div>
+    <div style="display:grid;gap:.6rem;">
+      <input type="hidden" id="col-id">
+      <input class="input" id="col-nombre" placeholder="Nombre">
+      <select class="input select" id="col-rol">
+        <option value="mesero">Mesero/a</option>
+        <option value="cajero">Cajero/a</option>
+        <option value="cocina">Cocina</option>
+      </select>
+      <input class="input" id="col-pin" placeholder="PIN de 4 dígitos" maxlength="4" type="password">
+      <button class="btn btn-primary" onclick="guardarColaborador()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Insumo -->
+<div id="modal-insumo" class="modal-overlay" style="display:none;">
+  <div class="modal-box" style="max-width:360px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+      <div style="font-family:var(--font-head);font-weight:700;">Insumo / Ingrediente</div>
+      <button class="btn btn-outline btn-sm" onclick="cerrarModal('modal-insumo')">✕</button>
+    </div>
+    <div style="display:grid;gap:.6rem;">
+      <input type="hidden" id="inv-id">
+      <input class="input" id="inv-nombre" placeholder="Nombre del insumo">
+      <input class="input" id="inv-stock" type="number" placeholder="Stock inicial" min="0">
+      <select class="input select" id="inv-unidad">
+        <option value="g">Gramos (g)</option>
+        <option value="kg">Kilogramos (kg)</option>
+        <option value="ml">Mililitros (ml)</option>
+        <option value="l">Litros (l)</option>
+        <option value="pz">Piezas (pz)</option>
+      </select>
+      <input class="input" id="inv-alerta" type="number" placeholder="Nivel de alerta (mínimo)">
+      <button class="btn btn-primary" onclick="guardarInsumo()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Ticket -->
+<div id="modal-ticket" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+      <div style="font-family:var(--font-head);font-weight:700;">Ticket</div>
+      <button class="btn btn-outline btn-sm" onclick="cerrarModal('modal-ticket')">✕</button>
+    </div>
+    <div id="ticket-contenido" class="ticket-preview print-area"></div>
+    <button class="btn btn-primary" style="width:100%;margin-top:1rem;" onclick="window.print()">🖨️ Imprimir</button>
+  </div>
+</div>
+
+<!-- Modal: Reporte -->
+<div id="modal-reporte" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+      <div style="font-family:var(--font-head);font-weight:700;">Reporte</div>
+      <button class="btn btn-outline btn-sm" onclick="cerrarModal('modal-reporte')">✕</button>
+    </div>
+    <div id="reporte-contenido" class="ticket-preview" style="max-height:65vh;overflow-y:auto;"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:1rem;">
+      <button class="btn btn-primary" onclick="window.print()">🖨️ Imprimir</button>
+      <button class="btn btn-outline" onclick="descargarReporte()">📥 Descargar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     JAVASCRIPT PRINCIPAL
+============================================================ -->
 <script>
-  // Datos temporales (Luego se conectarán a la base de datos en la nube)
-  const meserosList = [
-    { nombre: "Ana", pin: "1111", activo: true },
-    { nombre: "Carlos", pin: "2222", activo: true },
-    { nombre: "Lupita", pin: "3333", activo: true },
-    { nombre: "Miguel", pin: "4444", activo: true }
-  ];
+/* ---- Estado de sesión ---- */
+let sesion = null; // {tipo:'colaborador'|'admin', col: obj}
+let pinTarget = null;
+let pinBuffer = "";
 
-  let pinBuffer = "";
-  let pinTarget = null;
+/* ---- Orden activa ---- */
+let ordenActualId = null; // id de la orden que se está editando
+let carritoTienda = [];
 
-  // Renderizar meseros con el nuevo estilo btn-mesero
+/* ---- Cronómetro ---- */
+let cronoInterval = null;
+
+/* ============================
+   AUTENTICACIÓN
+============================ */
+function renderMeseros(){
   const grid = document.getElementById("meseros-grid");
-  meserosList.forEach(m => {
+  grid.innerHTML = "";
+  DB.colaboradores.filter(c=>c.activo).forEach(m=>{
     const btn = document.createElement("button");
-    btn.className = "btn btn-secondary btn-mesero";
+    btn.className = "mesero-btn";
     btn.textContent = m.nombre;
-    btn.onclick = () => seleccionarMesero(m);
+    btn.onclick = ()=>{ pinTarget={tipo:"colaborador",data:m}; mostrarPin(`PIN de ${m.nombre}`); };
     grid.appendChild(btn);
   });
+}
 
-  // (Lógica de PIN sigue igual que la versión anterior, solo cambié el color de los 'dots' a rojo)
-  function seleccionarMesero(m) {
-    pinTarget = { tipo: "mesero", data: m };
-    document.getElementById("pin-titulo").textContent = `PIN DE ${m.nombre.toUpperCase()}`;
-    mostrarPin();
-  }
+function seleccionarAdmin(){
+  pinTarget={tipo:"admin",data:{pin:DB.adminPin}};
+  mostrarPin("PIN Administrador");
+}
 
-  function seleccionarAdmin() {
-    pinTarget = { tipo: "admin", data: { pin: "0000" } };
-    document.getElementById("pin-titulo").textContent = "PIN DE ADMINISTRADOR";
-    mostrarPin();
-  }
+function mostrarPin(titulo){
+  pinBuffer=""; actualizarDots();
+  document.getElementById("view-selector").style.display="none";
+  document.getElementById("view-pin").style.display="block";
+  document.getElementById("pin-titulo").textContent=titulo;
+  document.getElementById("pin-error").textContent="";
+}
 
-  function mostrarPin() {
-    pinBuffer = "";
-    actualizarDots();
-    document.getElementById("pin-error").style.display = "none";
-    document.getElementById("view-selector").style.display = "none";
-    document.getElementById("view-pin").style.display = "block";
-  }
+function pinKey(k){
+  if(k==="←") pinBuffer=pinBuffer.slice(0,-1);
+  else if(k==="✓") validarPin();
+  else if(pinBuffer.length<4) pinBuffer+=k;
+  actualizarDots();
+  if(pinBuffer.length===4) setTimeout(validarPin,300);
+}
 
-  window.volverSelector = function() {
-    document.getElementById("view-pin").style.display = "none";
-    document.getElementById("view-selector").style.display = "block";
-  };
+function actualizarDots(){
+  for(let i=0;i<4;i++) document.getElementById(`d${i}`).classList.toggle("filled",i<pinBuffer.length);
+}
 
-  window.pinKey = function(k) {
-    if (k === "←") {
-      pinBuffer = pinBuffer.slice(0, -1);
-      actualizarDots();
-      return;
-    }
-    if (k === "✓") { validarPin(); return; }
-    if (pinBuffer.length >= 4) return;
-    pinBuffer += k;
-    actualizarDots();
-    if (pinBuffer.length === 4) {
-      setTimeout(validarPin, 200);
-    }
-  };
+function validarPin(){
+  if(pinBuffer===pinTarget.data.pin){
+    // Acceso concedido
+    document.getElementById("view-pin").style.display="none";
+    document.getElementById("login-header").style.display="none";
+    document.getElementById("main-card").classList.add("dash-card");
+    document.getElementById("view-dashboard").style.display="block";
 
-  function actualizarDots() {
-    for (let i = 0; i < 4; i++) {
-      document.getElementById(`d${i}`).classList.toggle("filled", i < pinBuffer.length);
-    }
-  }
-
-  function validarPin() {
-    const errEl = document.getElementById("pin-error");
-    let correcto = false;
-
-    if (pinTarget.tipo === "mesero") {
-      if (pinBuffer === pinTarget.data.pin) correcto = true;
+    if(pinTarget.tipo==="admin"){
+      sesion={tipo:"admin",col:null};
+      document.getElementById("nav-colaborador").style.display="none";
+      document.getElementById("dash-user").textContent="Administrador";
+      document.getElementById("dash-role").textContent="Panel de control";
+      switchView("admin",null);
     } else {
-      if (pinBuffer === "0000") correcto = true;
+      sesion={tipo:"colaborador",col:pinTarget.data};
+      document.getElementById("nav-colaborador").style.display="flex";
+      document.getElementById("dash-user").textContent=pinTarget.data.nombre;
+      document.getElementById("dash-role").textContent=pinTarget.data.rol;
+      switchView("mesas",document.getElementById("nb-mesas"));
     }
+    renderAll();
+  } else {
+    document.getElementById("pin-error").textContent="PIN incorrecto. Intenta de nuevo.";
+    pinBuffer=""; actualizarDots();
+  }
+}
 
-    if (correcto) {
-      document.getElementById("view-pin").style.display = "none";
-      document.getElementById("view-dashboard").style.display = "block";
-    } else {
-      errEl.textContent = "PIN INCORRECTO";
-      errEl.style.display = "block";
-      pinBuffer = "";
-      actualizarDots();
-    }
+function cerrarSesion(){
+  location.reload();
+}
+
+function volverSelector(){
+  document.getElementById("view-pin").style.display="none";
+  document.getElementById("view-selector").style.display="block";
+}
+
+/* ============================
+   NAVEGACIÓN
+============================ */
+function switchView(view, btn){
+  document.querySelectorAll(".dash-view").forEach(v=>v.style.display="none");
+  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
+  const el = document.getElementById(`view-${view}`);
+  if(el){ el.style.display="block"; el.classList.add("fade-in"); }
+  if(btn) btn.classList.add("active");
+  // Render según vista
+  if(view==="mesas") renderMesas();
+  if(view==="cocina") renderCocina();
+  if(view==="cobrar") renderCobrar();
+  if(view==="corte") renderCorte();
+  if(view==="admin") renderAdmin();
+}
+
+/* ============================
+   RENDER MESAS
+============================ */
+function renderMesas(){
+  const grid = document.getElementById("grid-mesas");
+  grid.innerHTML="";
+  for(let i=1;i<=DB.totalMesas;i++){
+    const orden = DB.ordenes.find(o=>o.tipo==="mesa"&&o.mesaNum===i&&o.estado!=="cobrada");
+    const card = document.createElement("button");
+    card.className = "mesa-card";
+    if(!orden) card.classList.add("libre");
+    else if(orden.estado==="cocina"||orden.estado==="lista") card.classList.add("cerrar");
+    else card.classList.add("ocupada");
+
+    card.innerHTML=`
+      <div style="font-size:1.4rem">🪑</div>
+      <div style="font-family:var(--font-head);font-size:.8rem;font-weight:700;">Mesa ${i}</div>
+      <div style="font-size:.65rem;color:var(--gray-400);">${orden?`${orden.cliente||"Sin nombre"} • ${estadoLabel(orden.estado)}`:"Libre"}</div>
+    `;
+    card.onclick=()=>abrirMesa(i);
+    grid.appendChild(card);
+  }
+  // Mis mesas bar
+  const bar = document.getElementById("mis-mesas-bar");
+  bar.innerHTML="";
+  const misOrdenes = sesion.col ? DB.ordenes.filter(o=>o.colId===sesion.col.id&&o.estado!=="cobrada") : [];
+  if(misOrdenes.length>0){
+    const label=document.createElement("span");
+    label.style.cssText="font-size:.72rem;font-weight:700;color:var(--gray-400);align-self:center;";
+    label.textContent="Mis órdenes:";
+    bar.appendChild(label);
+    misOrdenes.forEach(o=>{
+      const chip=document.createElement("button");
+      chip.className="btn btn-outline btn-sm";
+      chip.textContent=o.tipo==="llevar"?`🛍️ ${o.cliente||"Llevar"}`:`Mesa ${o.mesaNum}`;
+      chip.onclick=()=>abrirOrdenExistente(o.id);
+      bar.appendChild(chip);
+    });
+  }
+}
+
+function estadoLabel(e){
+  return {abierta:"🟡 Abierta",cocina:"🔴 En cocina",lista:"🟢 Lista",cobrada:"✅ Cobrada"}[e]||e;
+}
+
+function abrirMesa(num){
+  // ¿Ya existe orden abierta de esta mesa (de cualquier colaborador)?
+  let orden = DB.ordenes.find(o=>o.tipo==="mesa"&&o.mesaNum===num&&o.estado!=="cobrada");
+  if(!orden){
+    // Crear nueva
+    orden = crearOrden("mesa", num);
+  }
+  abrirOrdenExistente(orden.id);
+}
+
+function nuevaOrdenLlevar(){
+  const orden = crearOrden("llevar", null);
+  abrirOrdenExistente(orden.id);
+}
+
+function crearOrden(tipo, mesaNum){
+  const orden = {
+    id: DB.nextOrdenId++,
+    tipo, mesaNum,
+    colId: sesion.col ? sesion.col.id : null,
+    cliente: "",
+    items: [],
+    estado: "abierta",
+    inicio: new Date().toISOString(),
+    entrega: tipo==="llevar" ? new Date(Date.now()+15*60000).toISOString() : null,
+    propina: 0, pago: null
+  };
+  DB.ordenes.push(orden);
+  saveDB();
+  return orden;
+}
+
+/* ============================
+   RENDER ORDEN
+============================ */
+function abrirOrdenExistente(id){
+  ordenActualId = id;
+  switchView("orden", document.getElementById("nb-orden"));
+  renderOrden();
+}
+
+function getOrdenActual(){ return DB.ordenes.find(o=>o.id===ordenActualId); }
+
+function renderOrden(){
+  const o = getOrdenActual();
+  if(!o) return;
+
+  // Título
+  const titulo = document.getElementById("orden-titulo");
+  titulo.textContent = o.tipo==="llevar" ? "🛍️ Para Llevar" : `🪑 Mesa ${o.mesaNum}`;
+  const col = DB.colaboradores.find(c=>c.id===o.colId);
+  document.getElementById("orden-sub").textContent = col?`Atendido por: ${col.nombre}`:"";
+
+  // Cronómetro (solo llevar)
+  const cronoBlock = document.getElementById("crono-block");
+  if(o.tipo==="llevar"){
+    cronoBlock.style.display="block";
+    iniciarCronometro(o);
+  } else {
+    cronoBlock.style.display="none";
+    if(cronoInterval){ clearInterval(cronoInterval); cronoInterval=null; }
   }
 
-  function createFolder() {
-      const token = Math.random().toString(36).substr(2, 5).toUpperCase();
-      alert("Carpeta Creada con Token: " + token);
+  // Nombre cliente
+  document.getElementById("cliente-nombre").value = o.cliente||"";
+
+  // Estado badge
+  const badge = document.getElementById("orden-estado-badge");
+  badge.className="badge";
+  if(o.estado==="abierta") badge.classList.add("badge-amber");
+  else if(o.estado==="cocina") badge.classList.add("badge-red");
+  else badge.classList.add("badge-green");
+  badge.textContent = estadoLabel(o.estado);
+
+  // Tabs (mis otras órdenes activas)
+  const bar = document.getElementById("orden-tabs-bar");
+  bar.innerHTML="";
+  const misOrdenes = sesion.col ? DB.ordenes.filter(x=>x.colId===sesion.col.id&&x.estado!=="cobrada") : [o];
+  misOrdenes.forEach(x=>{
+    const btn=document.createElement("button");
+    btn.className=`btn btn-sm ${x.id===ordenActualId?"btn-primary":"btn-outline"}`;
+    btn.textContent=x.tipo==="llevar"?`🛍️ ${x.cliente||"Llevar"}`:`Mesa ${x.mesaNum}`;
+    btn.onclick=()=>{ ordenActualId=x.id; renderOrden(); };
+    bar.appendChild(btn);
+  });
+
+  // Items
+  renderOrdenItems();
+}
+
+function renderOrdenItems(){
+  const o = getOrdenActual();
+  if(!o) return;
+  const cont = document.getElementById("orden-items");
+  cont.innerHTML="";
+  if(o.items.length===0){
+    cont.innerHTML=`<div style="padding:1.5rem;text-align:center;color:var(--gray-400);font-size:.85rem;">Sin platillos aún. Agrega uno arriba ↓</div>`;
+  } else {
+    o.items.forEach((item,idx)=>{
+      const row = document.createElement("div");
+      row.style.cssText="padding:.65rem 1rem;border-bottom:1px solid var(--gray-100);";
+      const editable = o.estado!=="cobrada";
+      row.innerHTML=`
+        <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem;">
+          ${editable?`
+          <button class="qty-btn" onclick="cambiarQty(${idx},-1)">−</button>
+          <span style="font-weight:700;font-family:var(--font-head);min-width:18px;text-align:center;">${item.qty}</span>
+          <button class="qty-btn" onclick="cambiarQty(${idx},1)">+</button>`
+          :`<span style="font-weight:700;">${item.qty}×</span>`}
+          <span style="flex:1;font-size:.85rem;font-weight:600;">${item.nombre}</span>
+          <span style="font-weight:700;color:var(--gray-700);">$${(item.precio*item.qty).toFixed(2)}</span>
+          ${editable?`<button onclick="eliminarItem(${idx})" style="color:var(--red);font-size:.9rem;background:none;border:none;cursor:pointer;">✕</button>`:""}
+        </div>
+        ${editable?`<input class="input" style="font-size:.75rem;padding:.4rem .7rem;" placeholder="Nota especial (ej: sin cebolla, extra tortilla…)" value="${item.nota||""}" oninput="actualizarNota(${idx},this.value)">`:""}
+        ${(!editable&&item.nota)?`<div style="font-size:.72rem;color:var(--gray-400);margin-top:.2rem;">📝 ${item.nota}</div>`:""}
+      `;
+      cont.appendChild(row);
+    });
   }
+  // Total
+  const total = o.items.reduce((s,x)=>s+x.precio*x.qty,0);
+  document.getElementById("orden-total").textContent=`$${total.toFixed(2)}`;
+}
+
+function cambiarQty(idx, delta){
+  const o = getOrdenActual(); if(!o) return;
+  o.items[idx].qty = Math.max(1, o.items[idx].qty+delta);
+  saveDB(); renderOrdenItems();
+}
+
+function eliminarItem(idx){
+  const o = getOrdenActual(); if(!o) return;
+  o.items.splice(idx,1);
+  saveDB(); renderOrdenItems();
+}
+
+function actualizarNota(idx, val){
+  const o = getOrdenActual(); if(!o) return;
+  o.items[idx].nota=val; saveDB();
+}
+
+function actualizarOrdenActiva(){
+  const o = getOrdenActual(); if(!o) return;
+  o.cliente=document.getElementById("cliente-nombre").value;
+  saveDB();
+}
+
+/* ============================
+   MENÚ SELECTOR (MODAL)
+============================ */
+let menuCatFiltro = "";
+
+function abrirMenuSelector(){
+  menuCatFiltro="";
+  document.getElementById("menu-search").value="";
+  renderModalCats();
+  filtrarMenu();
+  abrirModal("modal-menu");
+}
+
+function renderModalCats(){
+  const cont = document.getElementById("modal-menu-cats");
+  cont.innerHTML="";
+  const btn0=document.createElement("button");
+  btn0.className=`btn btn-sm ${menuCatFiltro===""?"btn-primary":"btn-outline"}`;
+  btn0.textContent="Todas";
+  btn0.onclick=()=>{ menuCatFiltro=""; renderModalCats(); filtrarMenu(); };
+  cont.appendChild(btn0);
+  DB.categorias.forEach(cat=>{
+    const btn=document.createElement("button");
+    btn.className=`btn btn-sm ${menuCatFiltro===cat?"btn-primary":"btn-outline"}`;
+    btn.textContent=cat;
+    btn.onclick=()=>{ menuCatFiltro=cat; renderModalCats(); filtrarMenu(); };
+    cont.appendChild(btn);
+  });
+}
+
+function filtrarMenu(){
+  const q=document.getElementById("menu-search").value.toLowerCase();
+  const lista=document.getElementById("modal-menu-lista");
+  lista.innerHTML="";
+  const items = DB.menu.filter(m=>
+    (menuCatFiltro===""||m.cat===menuCatFiltro)&&
+    (q===""||m.nombre.toLowerCase().includes(q))
+  );
+  items.forEach(m=>{
+    const btn=document.createElement("button");
+    btn.style.cssText="display:flex;justify-content:space-between;align-items:center;padding:.7rem 1rem;border:1.5px solid var(--gray-200);border-radius:.75rem;background:#fff;cursor:pointer;font-family:var(--font-body);transition:.15s;";
+    btn.onmouseover=()=>btn.style.borderColor="var(--red)";
+    btn.onmouseout=()=>btn.style.borderColor="var(--gray-200)";
+    btn.innerHTML=`<span style="font-weight:600;font-size:.88rem;">${m.nombre} <span class="badge badge-blue" style="font-size:.65rem;">${m.cat}</span></span><span style="font-weight:800;color:var(--red);">$${m.precio.toFixed(2)}</span>`;
+    btn.onclick=()=>{ agregarItemOrden(m); cerrarModal("modal-menu"); };
+    lista.appendChild(btn);
+  });
+  if(!items.length) lista.innerHTML=`<div style="text-align:center;color:var(--gray-400);padding:1rem;font-size:.85rem;">Sin resultados</div>`;
+}
+
+function agregarItemOrden(m){
+  const o = getOrdenActual(); if(!o) return;
+  const exist = o.items.find(x=>x.menuId===m.id);
+  if(exist) exist.qty++;
+  else o.items.push({menuId:m.id,nombre:m.nombre,precio:m.precio,qty:1,nota:""});
+  saveDB(); renderOrdenItems();
+}
+
+/* ============================
+   MANDAR A COCINA Y CAJA
+============================ */
+function mandarACocinaYCaja(){
+  const o = getOrdenActual(); if(!o) return;
+  if(o.items.length===0){ alert("Agrega al menos un platillo."); return; }
+  o.estado="cocina";
+  saveDB();
+  renderOrden();
+  mostrarToast("¡Orden enviada a cocina y caja! 🍽️");
+}
+
+/* ============================
+   CRONÓMETRO (Para llevar)
+============================ */
+function iniciarCronometro(o){
+  if(cronoInterval) clearInterval(cronoInterval);
+  const horaEntrega = new Date(o.entrega);
+  document.getElementById("crono-hora").textContent = horaEntrega.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+  function tick(){
+    const diff = Math.max(0, horaEntrega-Date.now());
+    const min = Math.floor(diff/60000);
+    const sec = Math.floor((diff%60000)/1000);
+    const display = document.getElementById("crono-display");
+    display.textContent=`${String(min).padStart(2,"0")}:${String(sec).padStart(2,"0")}`;
+    display.className="cronometer";
+    if(diff<=0) display.classList.add("crono-red","pulse");
+    else if(min<5) display.classList.add("crono-amber");
+    else display.classList.add("crono-green");
+    if(diff<=0) clearInterval(cronoInterval);
+  }
+  tick();
+  cronoInterval=setInterval(tick,1000);
+}
+
+/* ============================
+   COCINA
+============================ */
+function renderCocina(){
+  const lista=document.getElementById("cocina-lista");
+  lista.innerHTML="";
+  const ordenes = DB.ordenes.filter(o=>o.estado==="cocina"||o.estado==="lista");
+  if(!ordenes.length){
+    lista.innerHTML=`<div style="text-align:center;color:var(--gray-400);padding:2rem;font-size:.9rem;">Sin órdenes en cocina 🎉</div>`;
+    return;
+  }
+  ordenes.forEach(o=>{
+    const col=DB.colaboradores.find(c=>c.id===o.colId);
+    const card=document.createElement("div");
+    card.style.cssText="background:#fff;border:1.5px solid var(--gray-200);border-radius:1rem;padding:1rem;";
+    card.innerHTML=`
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;flex-wrap:wrap;gap:.4rem;">
+        <div>
+          <span style="font-family:var(--font-head);font-weight:800;font-size:.95rem;">${o.tipo==="llevar"?"🛍️ Para llevar":`🪑 Mesa ${o.mesaNum}`}</span>
+          <span style="font-size:.75rem;color:var(--gray-400);margin-left:.5rem;">${o.cliente||""} ${col?"• "+col.nombre:""}</span>
+        </div>
+        <span class="badge ${o.estado==="cocina"?"badge-red":"badge-green"}">${estadoLabel(o.estado)}</span>
+      </div>
+      <ul style="list-style:none;margin-bottom:.75rem;">
+        ${o.items.map(i=>`<li style="font-size:.85rem;padding:.25rem 0;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;">
+          <span>${i.qty}× ${i.nombre} ${i.nota?`<em style="color:var(--gray-400);font-size:.75rem;">— ${i.nota}</em>`:""}</span>
+        </li>`).join("")}
+      </ul>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+        ${o.estado==="cocina"?`<button class="btn btn-green btn-sm" onclick="marcarLista(${o.id})">✅ Marcar Lista</button>`:""}
+        <button class="btn btn-outline btn-sm" onclick="abrirOrdenExistente(${o.id})">✏️ Ver/Editar</button>
+      </div>
+    `;
+    lista.appendChild(card);
+  });
+}
+
+function marcarLista(id){
+  const o=DB.ordenes.find(x=>x.id===id);
+  if(o){ o.estado="lista"; saveDB(); renderCocina(); mostrarToast("Orden marcada como lista ✅"); }
+}
+
+/* ============================
+   COBRAR
+============================ */
+let cobrarPago="efectivo";
+
+function renderCobrar(){
+  const sel=document.getElementById("cobrar-orden-select");
+  sel.innerHTML=`<option value="">-- Elige una orden --</option>`;
+  DB.ordenes.filter(o=>o.estado!=="cobrada"&&o.items.length>0).forEach(o=>{
+    const opt=document.createElement("option");
+    opt.value=o.id;
+    opt.textContent=o.tipo==="llevar"?`🛍️ Llevar – ${o.cliente||"Sin nombre"}`:`Mesa ${o.mesaNum} – ${o.cliente||"Sin nombre"}`;
+    sel.appendChild(opt);
+  });
+  document.getElementById("cobrar-detalle").style.display="none";
+}
+
+function cargarCobrar(){
+  const id=Number(document.getElementById("cobrar-orden-select").value);
+  if(!id){ document.getElementById("cobrar-detalle").style.display="none"; return; }
+  const o=DB.ordenes.find(x=>x.id===id);
+  if(!o) return;
+  document.getElementById("cobrar-detalle").style.display="block";
+  const sub=o.items.reduce((s,x)=>s+x.precio*x.qty,0);
+  document.getElementById("cobrar-subtotal").textContent=`$${sub.toFixed(2)}`;
+  // Resumen items
+  const res=document.getElementById("cobrar-items-resumen");
+  res.innerHTML=`<div style="border:1px solid var(--gray-200);border-radius:.75rem;overflow:hidden;margin-bottom:.5rem;">
+    ${o.items.map(i=>`<div style="display:flex;justify-content:space-between;padding:.5rem .75rem;border-bottom:1px solid var(--gray-100);font-size:.82rem;">
+      <span>${i.qty}× ${i.nombre}${i.nota?` <em style="color:var(--gray-400);">(${i.nota})</em>`:""}</span>
+      <span style="font-weight:700;">$${(i.precio*i.qty).toFixed(2)}</span>
+    </div>`).join("")}
+  </div>`;
+  cobrarPago="efectivo";
+  document.getElementById("pago-efectivo-block").style.display="block";
+  document.getElementById("pago-mixto-block").style.display="none";
+  document.getElementById("cambio-display").textContent="";
+  document.getElementById("faltante-display").textContent="";
+  document.getElementById("cobrar-propina").value="";
+}
+
+function seleccionarPago(tipo){
+  cobrarPago=tipo;
+  document.querySelectorAll(".pago-btn").forEach(b=>{ b.classList.remove("btn-primary"); b.classList.add("btn-outline"); });
+  event.currentTarget.classList.add("btn-primary"); event.currentTarget.classList.remove("btn-outline");
+  document.getElementById("pago-efectivo-block").style.display=tipo==="efectivo"?"block":"none";
+  document.getElementById("pago-mixto-block").style.display=tipo==="mixto"?"grid":"none";
+  document.getElementById("cambio-display").textContent="";
+  document.getElementById("faltante-display").textContent="";
+}
+
+function calcCambio(){
+  const id=Number(document.getElementById("cobrar-orden-select").value);
+  const o=DB.ordenes.find(x=>x.id===id); if(!o) return;
+  const sub=o.items.reduce((s,x)=>s+x.precio*x.qty,0);
+  const prop=Number(document.getElementById("cobrar-propina").value)||0;
+  const total=sub+prop;
+  const rec=Number(document.getElementById("pago-recibido").value)||0;
+  const diff=rec-total;
+  document.getElementById("cambio-display").textContent=diff>=0?`Cambio: $${diff.toFixed(2)}`:"";
+  document.getElementById("faltante-display").textContent=diff<0?`Falta: $${Math.abs(diff).toFixed(2)}`:"";
+}
+
+function calcMixto(){
+  const id=Number(document.getElementById("cobrar-orden-select").value);
+  const o=DB.ordenes.find(x=>x.id===id); if(!o) return;
+  const sub=o.items.reduce((s,x)=>s+x.precio*x.qty,0);
+  const prop=Number(document.getElementById("cobrar-propina").value)||0;
+  const total=sub+prop;
+  const ef=Number(document.getElementById("mix-efectivo").value)||0;
+  const tr=Number(document.getElementById("mix-transferencia").value)||0;
+  const diff=total-(ef+tr);
+  document.getElementById("mix-faltante").textContent=diff>0?`Falta: $${diff.toFixed(2)}`:(diff<0?`Cambio: $${Math.abs(diff).toFixed(2)}`:"✅ Cubierto");
+}
+
+function procesarCobro(){
+  const id=Number(document.getElementById("cobrar-orden-select").value);
+  const o=DB.ordenes.find(x=>x.id===id); if(!o){ alert("Selecciona una orden."); return; }
+  const sub=o.items.reduce((s,x)=>s+x.precio*x.qty,0);
+  const prop=Number(document.getElementById("cobrar-propina").value)||0;
+  o.propina=prop; o.pago=cobrarPago; o.estado="cobrada";
+  // Descontar inventario
+  descontarInventario(o);
+  // Registrar en historial
+  DB.historial.push({...o, cobradoEn: new Date().toISOString(), total:sub, propina:prop});
+  // Corte por colaborador
+  if(o.colId){
+    if(!DB.cortesMesero[o.colId]) DB.cortesMesero[o.colId]={propinas:0,ordenes:0,ventas:0};
+    DB.cortesMesero[o.colId].propinas+=prop;
+    DB.cortesMesero[o.colId].ordenes++;
+    DB.cortesMesero[o.colId].ventas+=sub;
+  }
+  saveDB();
+  mostrarToast("¡Cobro registrado! ✅");
+  imprimirTicketOrden(o, sub, prop);
+  renderCobrar();
+}
+
+function descontarInventario(o){
+  o.items.forEach(item=>{
+    const menuItem=DB.menu.find(m=>m.id===item.menuId);
+    if(!menuItem||!menuItem.insumos) return;
+    menuItem.insumos.forEach(ins=>{
+      const inv=DB.inventario.find(i=>i.nombre===ins.insumo);
+      if(inv) inv.stock=Math.max(0, inv.stock-(ins.qty*item.qty));
+    });
+  });
+  saveDB();
+}
+
+/* ============================
+   TICKET
+============================ */
+function imprimirTicket(){
+  const id=Number(document.getElementById("cobrar-orden-select").value);
+  const o=DB.ordenes.find(x=>x.id===id); if(!o) return;
+  const sub=o.items.reduce((s,x)=>s+x.precio*x.qty,0);
+  const prop=Number(document.getElementById("cobrar-propina").value)||0;
+  imprimirTicketOrden(o, sub, prop);
+}
+
+function imprimirTicketOrden(o, sub, prop){
+  const col=DB.colaboradores.find(c=>c.id===o.colId);
+  const fecha=new Date().toLocaleDateString('es-MX',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  let html=`<div style="text-align:center;margin-bottom:.5rem;"><strong>BARBACOA TÍO GOR</strong><br><small>${fecha}</small><br><small>${o.tipo==="llevar"?"Para Llevar":`Mesa ${o.mesaNum}`} • ${o.cliente||"Sin nombre"}</small>${col?`<br><small>Atendió: ${col.nombre}</small>`:""}</div>
+  <hr style="border:none;border-top:1px dashed #999;margin:.4rem 0;">
+  ${o.items.map(i=>`<div style="display:flex;justify-content:space-between;">${i.qty}× ${i.nombre}${i.nota?` (${i.nota})`:""}<span>$${(i.precio*i.qty).toFixed(2)}</span></div>`).join("")}
+  <hr style="border:none;border-top:1px dashed #999;margin:.4rem 0;">
+  <div style="display:flex;justify-content:space-between;"><span>Subtotal</span><span>$${sub.toFixed(2)}</span></div>
+  ${prop>0?`<div style="display:flex;justify-content:space-between;"><span>Propina</span><span>$${prop.toFixed(2)}</span></div>`:""}
+  <div style="display:flex;justify-content:space-between;font-weight:bold;"><span>TOTAL</span><span>$${(sub+prop).toFixed(2)}</span></div>
+  <hr style="border:none;border-top:1px dashed #999;margin:.4rem 0;">
+  <div style="text-align:center;font-size:.75rem;">¿Necesitas factura?<br>facturacion.tiogor.mx<br>¡Gracias por su preferencia!</div>`;
+  document.getElementById("ticket-contenido").innerHTML=html;
+  abrirModal("modal-ticket");
+}
+
+/* ============================
+   CORTE COLABORADOR
+============================ */
+let tiendaCarrito = [];
+
+function renderCorte(){
+  if(!sesion.col) return;
+  const id=sesion.col.id;
+  const datos=DB.cortesMesero[id]||{propinas:0,ordenes:0,ventas:0};
+  const cont=document.getElementById("corte-data");
+  cont.innerHTML=`
+    <div style="background:var(--green);color:#fff;border-radius:1rem;padding:1rem;text-align:center;">
+      <div style="font-size:.75rem;font-weight:700;opacity:.8;text-transform:uppercase;letter-spacing:.08em;">Propinas del día</div>
+      <div style="font-family:var(--font-head);font-size:2rem;font-weight:800;">$${datos.propinas.toFixed(2)}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;">
+      <div style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:1rem;padding:1rem;text-align:center;">
+        <div style="font-size:.7rem;color:var(--gray-400);font-weight:700;text-transform:uppercase;">Órdenes cerradas</div>
+        <div style="font-family:var(--font-head);font-size:1.6rem;font-weight:800;">${datos.ordenes}</div>
+      </div>
+      <div style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:1rem;padding:1rem;text-align:center;">
+        <div style="font-size:.7rem;color:var(--gray-400);font-weight:700;text-transform:uppercase;">Ventas totales</div>
+        <div style="font-family:var(--font-head);font-size:1.3rem;font-weight:800;">$${datos.ventas.toFixed(2)}</div>
+      </div>
+    </div>
+  `;
+  // Tienda
+  const tg=document.getElementById("tienda-grid");
+  tg.innerHTML="";
+  tiendaCarrito=[];
+  DB.menu.forEach(m=>{
+    const precio=m.precio*0.7;
+    const row=document.createElement("div");
+    row.style.cssText="display:flex;justify-content:space-between;align-items:center;padding:.5rem .75rem;background:#fff;border:1px solid var(--gray-200);border-radius:.75rem;font-size:.82rem;";
+    row.innerHTML=`<span>${m.nombre}</span><div style="display:flex;align-items:center;gap:.5rem;"><span style="font-weight:700;color:var(--red);">$${precio.toFixed(2)}</span><button class="btn btn-primary btn-sm" onclick="agregarTienda(${m.id},'${m.nombre}',${precio})">+</button></div>`;
+    tg.appendChild(row);
+  });
+  renderCarritoTienda();
+}
+
+function agregarTienda(id, nombre, precio){
+  const ex=tiendaCarrito.find(x=>x.id===id);
+  if(ex) ex.qty++;
+  else tiendaCarrito.push({id,nombre,precio,qty:1});
+  renderCarritoTienda();
+}
+
+function renderCarritoTienda(){
+  const c=document.getElementById("tienda-carrito");
+  const ti=document.getElementById("tienda-items");
+  if(!tiendaCarrito.length){ c.style.display="none"; return; }
+  c.style.display="block";
+  ti.innerHTML=tiendaCarrito.map((x,i)=>`<div style="display:flex;justify-content:space-between;font-size:.8rem;padding:.2rem 0;">
+    <span>${x.qty}× ${x.nombre}</span>
+    <div style="display:flex;gap:.4rem;align-items:center;">
+      <span>$${(x.precio*x.qty).toFixed(2)}</span>
+      <button onclick="quitarTienda(${i})" style="color:var(--red);background:none;border:none;cursor:pointer;font-size:.85rem;">✕</button>
+    </div>
+  </div>`).join("");
+  const total=tiendaCarrito.reduce((s,x)=>s+x.precio*x.qty,0);
+  document.getElementById("tienda-total").textContent=`$${total.toFixed(2)}`;
+}
+
+function quitarTienda(i){ tiendaCarrito.splice(i,1); renderCarritoTienda(); }
+
+function confirmarCompra(){
+  if(!tiendaCarrito.length) return;
+  const total=tiendaCarrito.reduce((s,x)=>s+x.precio*x.qty,0);
+  const id=sesion.col.id;
+  if(!DB.cortesMesero[id]) DB.cortesMesero[id]={propinas:0,ordenes:0,ventas:0};
+  DB.cortesMesero[id].propinas=Math.max(0,DB.cortesMesero[id].propinas-total);
+  saveDB(); tiendaCarrito=[];
+  mostrarToast(`Compra de $${total.toFixed(2)} descontada de tus propinas ✅`);
+  renderCorte();
+}
+
+function enviarCorte(){
+  const id=sesion.col.id;
+  const datos=DB.cortesMesero[id]||{propinas:0,ordenes:0,ventas:0};
+  // Marcar corte enviado
+  if(!DB.cortesEnviados) DB.cortesEnviados=[];
+  DB.cortesEnviados.push({colId:id,nombre:sesion.col.nombre,fecha:new Date().toISOString(),...datos});
+  saveDB();
+  mostrarToast("Corte enviado al administrador ✅");
+}
+
+/* ============================
+   ADMIN - MENÚ
+============================ */
+function renderAdmin(){
+  renderTabMenu();
+  renderTabPersonal();
+  renderTabMesasAdmin();
+  renderTabInventario();
+  renderTabCortes();
+}
+
+function renderTabMenu(){
+  // Categorías
+  const cont=document.getElementById("admin-categorias");
+  cont.innerHTML="";
+  DB.categorias.forEach((cat,i)=>{
+    const wrap=document.createElement("div");
+    wrap.style.cssText="display:inline-flex;align-items:center;gap:.3rem;background:var(--gray-100);border-radius:99px;padding:.3rem .75rem;font-size:.75rem;font-weight:600;";
+    wrap.innerHTML=`${cat} <button onclick="eliminarCategoria(${i})" style="color:var(--red);background:none;border:none;cursor:pointer;font-size:.8rem;">✕</button>`;
+    cont.appendChild(wrap);
+  });
+  // Tabla
+  const tbody=document.getElementById("menu-tbody");
+  tbody.innerHTML="";
+  DB.menu.forEach(m=>{
+    const tr=document.createElement("tr");
+    tr.style="border-bottom:1px solid var(--gray-100);";
+    tr.innerHTML=`<td style="padding:.6rem .4rem;color:var(--gray-400);font-size:.78rem;">${m.cat}</td>
+      <td style="padding:.6rem .4rem;font-weight:600;">${m.nombre}</td>
+      <td style="padding:.6rem .4rem;font-weight:700;color:var(--red);">$${m.precio.toFixed(2)}</td>
+      <td style="padding:.6rem .4rem;white-space:nowrap;">
+        <button class="btn btn-outline btn-sm" onclick="abrirModalPlatillo(${m.id})">✏️</button>
+        <button class="btn btn-sm" style="color:var(--red);margin-left:.3rem;" onclick="eliminarPlatillo(${m.id})">🗑️</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+  // Poblar selects de categoría en modal
+  const selects=["p-cat"];
+  selects.forEach(sid=>{
+    const s=document.getElementById(sid); if(!s) return;
+    s.innerHTML=`<option value="">-- Categoría --</option>`;
+    DB.categorias.forEach(c=>{ const o=document.createElement("option"); o.value=c; o.textContent=c; s.appendChild(o); });
+  });
+}
+
+function abrirModalCategoria(){ document.getElementById("nueva-cat").value=""; abrirModal("modal-categoria"); }
+function guardarCategoria(){
+  const n=document.getElementById("nueva-cat").value.trim();
+  if(!n) return;
+  if(!DB.categorias.includes(n)) DB.categorias.push(n);
+  saveDB(); cerrarModal("modal-categoria"); renderTabMenu();
+}
+function eliminarCategoria(i){ DB.categorias.splice(i,1); saveDB(); renderTabMenu(); }
+
+function abrirModalPlatillo(id){
+  const m=id?DB.menu.find(x=>x.id===id):null;
+  document.getElementById("p-id").value=m?m.id:"";
+  document.getElementById("p-nombre").value=m?m.nombre:"";
+  document.getElementById("p-precio").value=m?m.precio:"";
+  // Poblar cats
+  const s=document.getElementById("p-cat");
+  s.innerHTML=`<option value="">-- Categoría --</option>`;
+  DB.categorias.forEach(c=>{ const o=document.createElement("option"); o.value=c; o.textContent=c; if(m&&m.cat===c) o.selected=true; s.appendChild(o); });
+  abrirModal("modal-platillo");
+}
+
+function guardarPlatillo(){
+  const id=Number(document.getElementById("p-id").value);
+  const nombre=document.getElementById("p-nombre").value.trim();
+  const precio=Number(document.getElementById("p-precio").value);
+  const cat=document.getElementById("p-cat").value;
+  if(!nombre||!precio||!cat){ alert("Completa todos los campos."); return; }
+  if(id){
+    const m=DB.menu.find(x=>x.id===id);
+    if(m){ m.nombre=nombre; m.precio=precio; m.cat=cat; }
+  } else {
+    DB.menu.push({id:DB.nextMenuId++,nombre,cat,precio,insumos:[]});
+  }
+  saveDB(); cerrarModal("modal-platillo"); renderTabMenu();
+}
+
+function eliminarPlatillo(id){
+  if(!confirm("¿Eliminar este platillo?")) return;
+  DB.menu=DB.menu.filter(m=>m.id!==id); saveDB(); renderTabMenu();
+}
+
+/* ============================
+   ADMIN - PERSONAL
+============================ */
+function renderTabPersonal(){
+  const cont=document.getElementById("admin-personal");
+  cont.innerHTML="";
+  DB.colaboradores.forEach(c=>{
+    const row=document.createElement("div");
+    row.style.cssText="display:flex;justify-content:space-between;align-items:center;padding:.75rem 1rem;border:1.5px solid var(--gray-200);border-radius:.75rem;margin-bottom:.5rem;flex-wrap:wrap;gap:.4rem;";
+    row.innerHTML=`
+      <div>
+        <div style="font-weight:700;font-size:.9rem;">${c.nombre} <span style="font-size:.72rem;color:var(--gray-400);">(${c.rol})</span></div>
+        <div style="font-size:.72rem;color:var(--gray-400);">PIN: ${"•".repeat(c.pin.length)} • <span class="${c.activo?"badge-green":"badge-red"} badge">${c.activo?"Activo":"Inactivo"}</span></div>
+      </div>
+      <div style="display:flex;gap:.4rem;flex-wrap:wrap;">
+        <button class="btn btn-outline btn-sm" onclick="abrirModalColaborador(${c.id})">✏️ Editar</button>
+        <button class="btn btn-outline btn-sm" onclick="toggleColaborador(${c.id})">${c.activo?"Desactivar":"Activar"}</button>
+        <button class="btn btn-sm" style="color:var(--red);" onclick="eliminarColaborador(${c.id})">🗑️</button>
+      </div>
+    `;
+    cont.appendChild(row);
+  });
+}
+
+function abrirModalColaborador(id){
+  const c=id?DB.colaboradores.find(x=>x.id===id):null;
+  document.getElementById("col-id").value=c?c.id:"";
+  document.getElementById("col-nombre").value=c?c.nombre:"";
+  document.getElementById("col-rol").value=c?c.rol:"mesero";
+  document.getElementById("col-pin").value="";
+  abrirModal("modal-colaborador");
+}
+
+function guardarColaborador(){
+  const id=Number(document.getElementById("col-id").value);
+  const nombre=document.getElementById("col-nombre").value.trim();
+  const rol=document.getElementById("col-rol").value;
+  const pin=document.getElementById("col-pin").value.trim();
+  if(!nombre){ alert("Ingresa el nombre."); return; }
+  if(id){
+    const c=DB.colaboradores.find(x=>x.id===id);
+    if(c){ c.nombre=nombre; c.rol=rol; if(pin&&pin.length===4) c.pin=pin; }
+  } else {
+    if(pin.length!==4){ alert("El PIN debe ser de 4 dígitos."); return; }
+    DB.colaboradores.push({id:DB.nextColId++,nombre,rol,pin,activo:true});
+  }
+  saveDB(); cerrarModal("modal-colaborador"); renderTabPersonal(); renderMeseros();
+}
+
+function toggleColaborador(id){
+  const c=DB.colaboradores.find(x=>x.id===id);
+  if(c){ c.activo=!c.activo; saveDB(); renderTabPersonal(); renderMeseros(); }
+}
+
+function eliminarColaborador(id){
+  if(!confirm("¿Eliminar colaborador?")) return;
+  DB.colaboradores=DB.colaboradores.filter(c=>c.id!==id); saveDB(); renderTabPersonal(); renderMeseros();
+}
+
+/* ============================
+   ADMIN - MESAS
+============================ */
+function renderTabMesasAdmin(){
+  document.getElementById("total-mesas-admin").textContent=DB.totalMesas;
+  const grid=document.getElementById("admin-grid-mesas");
+  grid.innerHTML="";
+  for(let i=1;i<=DB.totalMesas;i++){
+    const b=document.createElement("div");
+    b.style.cssText="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:.75rem;padding:.6rem;text-align:center;font-size:.8rem;font-weight:700;";
+    b.textContent=`Mesa ${i}`;
+    grid.appendChild(b);
+  }
+}
+
+function agregarMesa(){ DB.totalMesas++; saveDB(); renderTabMesasAdmin(); renderMesas(); }
+function quitarMesa(){ if(DB.totalMesas>1){ DB.totalMesas--; saveDB(); renderTabMesasAdmin(); renderMesas(); } }
+
+/* ============================
+   ADMIN - INVENTARIO
+============================ */
+function renderTabInventario(){
+  // Alertas
+  const alertas=DB.inventario.filter(i=>i.stock<=i.alerta);
+  const ac=document.getElementById("alertas-inventario");
+  ac.innerHTML=alertas.length?`<div style="background:#fef3c7;border:1px solid #fcd34d;border-radius:.75rem;padding:.75rem;font-size:.8rem;font-weight:600;color:#92400e;">⚠️ Bajo stock: ${alertas.map(a=>`${a.nombre} (${a.stock} ${a.unidad})`).join(", ")}</div>`:"";
+  // Tabla
+  const tbody=document.getElementById("inv-tbody");
+  tbody.innerHTML="";
+  DB.inventario.forEach(inv=>{
+    const bajo=inv.stock<=inv.alerta;
+    const tr=document.createElement("tr");
+    tr.style="border-bottom:1px solid var(--gray-100);";
+    tr.innerHTML=`<td style="padding:.6rem;">${inv.nombre}</td>
+      <td style="padding:.6rem;font-weight:700;${bajo?"color:var(--red);":""}">${inv.stock.toLocaleString()}</td>
+      <td style="padding:.6rem;color:var(--gray-400);">${inv.unidad}</td>
+      <td style="padding:.6rem;color:var(--gray-400);">${inv.alerta.toLocaleString()}</td>
+      <td style="padding:.6rem;white-space:nowrap;">
+        <button class="btn btn-outline btn-sm" onclick="ajustarStock(${inv.id})">Ajustar</button>
+        <button class="btn btn-outline btn-sm" onclick="abrirModalInsumo(${inv.id})" style="margin-left:.3rem;">✏️</button>
+        <button class="btn btn-sm" style="color:var(--red);margin-left:.3rem;" onclick="eliminarInsumo(${inv.id})">🗑️</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function abrirModalInsumo(id){
+  const inv=id?DB.inventario.find(x=>x.id===id):null;
+  document.getElementById("inv-id").value=inv?inv.id:"";
+  document.getElementById("inv-nombre").value=inv?inv.nombre:"";
+  document.getElementById("inv-stock").value=inv?inv.stock:"";
+  document.getElementById("inv-unidad").value=inv?inv.unidad:"g";
+  document.getElementById("inv-alerta").value=inv?inv.alerta:"";
+  abrirModal("modal-insumo");
+}
+
+function guardarInsumo(){
+  const id=Number(document.getElementById("inv-id").value);
+  const nombre=document.getElementById("inv-nombre").value.trim();
+  const stock=Number(document.getElementById("inv-stock").value);
+  const unidad=document.getElementById("inv-unidad").value;
+  const alerta=Number(document.getElementById("inv-alerta").value);
+  if(!nombre){ alert("Ingresa el nombre."); return; }
+  if(id){
+    const inv=DB.inventario.find(x=>x.id===id);
+    if(inv){ inv.nombre=nombre; inv.stock=stock; inv.unidad=unidad; inv.alerta=alerta; }
+  } else {
+    DB.inventario.push({id:DB.nextInvId++,nombre,stock,unidad,alerta});
+  }
+  saveDB(); cerrarModal("modal-insumo"); renderTabInventario();
+}
+
+function ajustarStock(id){
+  const inv=DB.inventario.find(x=>x.id===id); if(!inv) return;
+  const val=prompt(`Stock actual de ${inv.nombre}: ${inv.stock} ${inv.unidad}\nNuevo stock:`);
+  if(val!==null&&!isNaN(val)){ inv.stock=Number(val); saveDB(); renderTabInventario(); }
+}
+
+function eliminarInsumo(id){
+  if(!confirm("¿Eliminar insumo?")) return;
+  DB.inventario=DB.inventario.filter(i=>i.id!==id); saveDB(); renderTabInventario();
+}
+
+/* ============================
+   ADMIN - CORTES
+============================ */
+function renderTabCortes(){
+  const cont=document.getElementById("admin-cortes");
+  cont.innerHTML="";
+  const enviados=(DB.cortesEnviados||[]);
+  if(!enviados.length){
+    cont.innerHTML=`<div style="text-align:center;color:var(--gray-400);padding:2rem;">Sin cortes enviados aún.</div>`;
+    return;
+  }
+  enviados.forEach(c=>{
+    const row=document.createElement("div");
+    row.style.cssText="border:1.5px solid var(--gray-200);border-radius:.75rem;padding:1rem;margin-bottom:.75rem;";
+    row.innerHTML=`
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.4rem;margin-bottom:.5rem;">
+        <div style="font-family:var(--font-head);font-weight:700;">${c.nombre}</div>
+        <div style="font-size:.72rem;color:var(--gray-400);">${new Date(c.fecha).toLocaleString('es-MX')}</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;text-align:center;">
+        <div style="background:var(--gray-50);border-radius:.5rem;padding:.5rem;"><div style="font-size:.65rem;color:var(--gray-400);text-transform:uppercase;">Órdenes</div><div style="font-weight:800;">${c.ordenes}</div></div>
+        <div style="background:var(--gray-50);border-radius:.5rem;padding:.5rem;"><div style="font-size:.65rem;color:var(--gray-400);text-transform:uppercase;">Ventas</div><div style="font-weight:800;">$${c.ventas.toFixed(2)}</div></div>
+        <div style="background:#dcfce7;border-radius:.5rem;padding:.5rem;"><div style="font-size:.65rem;color:var(--green);text-transform:uppercase;">Propinas</div><div style="font-weight:800;color:var(--green);">$${c.propinas.toFixed(2)}</div></div>
+      </div>
+    `;
+    cont.appendChild(row);
+  });
+}
+
+/* ============================
+   REPORTES
+============================ */
+let reporteTexto="";
+
+function generarReporteVentas(){
+  const hoy=new Date().toLocaleDateString('es-MX');
+  const cobradas=DB.historial;
+  const totalVentas=cobradas.reduce((s,o)=>s+o.total,0);
+  const totalPropinas=cobradas.reduce((s,o)=>s+o.propina,0);
+  // Por mesero
+  const porMesero={};
+  cobradas.forEach(o=>{
+    const col=DB.colaboradores.find(c=>c.id===o.colId);
+    const nom=col?col.nombre:"Desconocido";
+    if(!porMesero[nom]) porMesero[nom]={ordenes:0,ventas:0,propinas:0};
+    porMesero[nom].ordenes++;
+    porMesero[nom].ventas+=o.total;
+    porMesero[nom].propinas+=o.propina;
+  });
+  // Por producto
+  const porProd={};
+  cobradas.forEach(o=>o.items.forEach(i=>{
+    if(!porProd[i.nombre]) porProd[i.nombre]={qty:0,total:0};
+    porProd[i.nombre].qty+=i.qty;
+    porProd[i.nombre].total+=i.precio*i.qty;
+  }));
+
+  reporteTexto=`REPORTE DE VENTAS – BARBACOA TÍO GOR\n${hoy}\n${"=".repeat(40)}\n\nTOTAL DEL DÍA: $${totalVentas.toFixed(2)}\nPROPINAS: $${totalPropinas.toFixed(2)}\nÓRDENES: ${cobradas.length}\n\n-- POR COLABORADOR --\n${Object.entries(porMesero).map(([n,d])=>`${n}: ${d.ordenes} órdenes | $${d.ventas.toFixed(2)} | Propinas: $${d.propinas.toFixed(2)}`).join("\n")||"Sin datos"}\n\n-- PRODUCTOS MÁS VENDIDOS --\n${Object.entries(porProd).sort((a,b)=>b[1].qty-a[1].qty).map(([n,d])=>`${d.qty}× ${n} = $${d.total.toFixed(2)}`).join("\n")||"Sin datos"}`;
+
+  document.getElementById("reporte-contenido").innerHTML=reporteTexto.replace(/\n/g,"<br>");
+  abrirModal("modal-reporte");
+}
+
+function generarReporteInventario(){
+  reporteTexto=`REPORTE DE INVENTARIO – BARBACOA TÍO GOR\n${new Date().toLocaleDateString('es-MX')}\n${"=".repeat(40)}\n\n${DB.inventario.map(i=>`${i.nombre}: ${i.stock} ${i.unidad} (alerta: ${i.alerta} ${i.unidad})${i.stock<=i.alerta?" ⚠️ BAJO STOCK":""}`).join("\n")}`;
+  document.getElementById("reporte-contenido").innerHTML=reporteTexto.replace(/\n/g,"<br>");
+  abrirModal("modal-reporte");
+}
+
+function compartirReporteCompleto(){
+  generarReporteVentas();
+  // Intentar Web Share API si está disponible
+  setTimeout(()=>{
+    if(navigator.share){
+      navigator.share({title:"Reporte Barbacoa Tío Gor",text:reporteTexto}).catch(()=>{});
+    }
+  },500);
+}
+
+function descargarReporte(){
+  if(!reporteTexto) return;
+  const blob=new Blob([reporteTexto],{type:"text/plain;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a"); a.href=url; a.download=`reporte-${Date.now()}.txt`; a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ============================
+   CONFIG ADMIN PIN
+============================ */
+function cambiarPinAdmin(){
+  const actual=document.getElementById("pin-actual").value;
+  const nuevo=document.getElementById("pin-nuevo").value;
+  const conf=document.getElementById("pin-confirm").value;
+  const msg=document.getElementById("pin-admin-msg");
+  if(actual!==DB.adminPin){ msg.style.color="var(--red)"; msg.textContent="PIN actual incorrecto."; return; }
+  if(nuevo.length!==4||isNaN(nuevo)){ msg.style.color="var(--red)"; msg.textContent="El PIN nuevo debe ser de 4 dígitos."; return; }
+  if(nuevo!==conf){ msg.style.color="var(--red)"; msg.textContent="Los PINs no coinciden."; return; }
+  DB.adminPin=nuevo; saveDB();
+  msg.style.color="var(--green)"; msg.textContent="PIN actualizado correctamente ✅";
+}
+
+/* ============================
+   TAB ADMIN
+============================ */
+function tabAdmin(tabId, btn){
+  document.querySelectorAll(".admin-tab-content").forEach(t=>t.classList.remove("active"));
+  document.querySelectorAll(".admin-nav-item").forEach(b=>b.classList.remove("active"));
+  document.getElementById(tabId).classList.add("active");
+  if(btn) btn.classList.add("active");
+  else event.currentTarget.classList.add("active");
+  // Render específico
+  if(tabId==="tab-inventario") renderTabInventario();
+  if(tabId==="tab-personal") renderTabPersonal();
+  if(tabId==="tab-mesas-admin") renderTabMesasAdmin();
+  if(tabId==="tab-cortes-admin") renderTabCortes();
+  if(tabId==="tab-menu") renderTabMenu();
+}
+
+/* ============================
+   MODALES HELPER
+============================ */
+function abrirModal(id){ document.getElementById(id).style.display="flex"; }
+function cerrarModal(id){ document.getElementById(id).style.display="none"; }
+document.querySelectorAll(".modal-overlay").forEach(m=>{
+  m.addEventListener("click",e=>{ if(e.target===m) m.style.display="none"; });
+});
+
+/* ============================
+   TOAST
+============================ */
+function mostrarToast(msg){
+  let t=document.getElementById("toast");
+  if(!t){ t=document.createElement("div"); t.id="toast"; t.style.cssText="position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:.65rem 1.3rem;border-radius:99px;font-size:.82rem;font-weight:600;z-index:999;transition:opacity .3s;box-shadow:0 4px 16px rgba(0,0,0,.2);"; document.body.appendChild(t); }
+  t.textContent=msg; t.style.opacity="1";
+  clearTimeout(t._t); t._t=setTimeout(()=>t.style.opacity="0",2800);
+}
+
+/* ============================
+   RENDER ALL
+============================ */
+function renderAll(){
+  renderMeseros();
+  renderMesas();
+  if(sesion&&sesion.tipo==="admin") renderAdmin();
+}
+
+/* ============================
+   INIT
+============================ */
+renderMeseros();
 </script>
 </body>
 </html>
+
